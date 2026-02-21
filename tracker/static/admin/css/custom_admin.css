@@ -1,0 +1,24 @@
+:root, [data-theme="light"], [data-theme="dark"], body {
+    --body-bg: #fdfbf7 !important;
+    --header-bg: #ffffff !important;
+    --primary: #e67e22 !important;
+}
+
+#header {
+    background: #ffffff !important;
+    border-bottom: 3px solid #e67e22 !important;
+    color: #2d3436 !important;
+}
+
+#branding h1, #branding h1 a {
+    color: #e67e22 !important;
+}
+
+body, #container, #content {
+    background-color: #fdfbf7 !important;
+}
+
+.module h2, .module caption, .inline-group h2 {
+    background: #2d3436 !important;
+    color: #ffffff !important;
+}

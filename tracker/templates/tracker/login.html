@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In | CodeSoft</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-warm: #fdfbf7;
+            --accent-clay: #e67e22;
+            --text-dark: #2d3436;
+            --input-bg: #f8f9fa;
+        }
+
+        body { 
+            background-color: var(--bg-warm); 
+            font-family: 'Segoe UI', sans-serif; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh; 
+            margin: 0;
+        }
+
+        .login-box { 
+            background: white; 
+            padding: 50px 40px; 
+            border-radius: 24px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.03); 
+            width: 100%; 
+            max-width: 420px;
+            border: 1px solid rgba(0,0,0,0.05);
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn-human { 
+            background-color: var(--text-dark); 
+            color: white; 
+            border-radius: 12px; 
+            padding: 14px; 
+            width: 100%; 
+            border: none; 
+            font-weight: 600;
+            transition: 0.3s; 
+        }
+
+        .btn-human:hover { 
+            background-color: var(--accent-clay); 
+            transform: scale(1.02);
+        }
+
+        /* Password Wrapper for Eye Button */
+        .password-wrapper {
+            position: relative;
+        }
+
+        .form-control { 
+            background-color: var(--input-bg); 
+            border: 2px solid transparent; 
+            border-radius: 12px; 
+            padding: 14px; 
+            margin-bottom: 20px; 
+            transition: 0.2s;
+            padding-right: 45px; /* Space for the eye icon */
+        }
+
+        .form-control:focus { 
+            background-color: white;
+            border-color: var(--accent-clay);
+            box-shadow: none;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 15px; /* Centers it vertically in the input */
+            cursor: pointer;
+            color: #95a5a6;
+            transition: 0.3s;
+        }
+
+        .toggle-password:hover {
+            color: var(--accent-clay);
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: #95a5a6;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-box text-center">
+        <h2 class="fw-bold mb-2" style="color: var(--accent-clay); letter-spacing: -1px;">CodeSoft</h2>
+        <p class="text-muted small mb-5">Enter credentials to proceed</p>
+        
+        <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            
+            <div class="text-start">
+                <label class="small fw-bold text-muted mb-1 ms-1">Username</label>
+                <input type="text" name="username" class="form-control" placeholder="admin" required>
+            </div>
+
+            <div class="text-start">
+                <label class="small fw-bold text-muted mb-1 ms-1">Password</label>
+                <div class="password-wrapper">
+                    <input type="password" name="password" id="passwordInput" class="form-control" placeholder="••••••••" required>
+                    <i class="fas fa-eye toggle-password" id="toggleIcon"></i>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-human mt-3">Sign In</button>
+        </form>
+
+        <div class="mt-4 pt-2">
+            <a href="{% url 'index' %}" class="back-link">
+                <i class="fas fa-arrow-left me-1"></i> Return to home
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const toggleIcon = document.querySelector('#toggleIcon');
+        const passwordInput = document.querySelector('#passwordInput');
+
+        toggleIcon.addEventListener('click', function () {
+            // Toggle the type attribute
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            // Toggle the eye icon
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+    </script>
+
+</body>
+</html>
