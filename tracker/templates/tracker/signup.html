@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CodeSoft | Sign Up</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            background-color: #fdfbf7;
+            font-family: sans-serif;
+        }
+
+        .auth-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .auth-box {
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        h2 {
+            color: #2d3436; /* Charcoal */
+            margin-bottom: 25px;
+        }
+
+        .btn-signup {
+            width: 100%;
+            padding: 12px;
+            background: #2d3436;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+<div class="auth-wrapper">
+    <div class="auth-box">
+        <h2 style="color: #e67e22;">Join CodeSoft</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn-signup">Register</button>
+        </form>
+        <br>
+        <a href="{% url 'login' %}" style="color: #636e72; text-decoration: none;">Already have an account? Sign In</a>
+    </div>
+</div>
+
+</body>
+</html>

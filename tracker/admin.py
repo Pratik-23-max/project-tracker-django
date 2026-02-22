@@ -1,18 +1,24 @@
 from django.contrib import admin
 from .models import Project, Task
 
+# Branding
 admin.site.site_header = "CodeSoft Manager Portal"
 admin.site.index_title = "Workspace Management"
 
-class CodeSoftMedia:
-    css = {'all': ('admin/css/custom_admin.css',)}
+# We use "Media" inside the classes to link the CSS
+class CodeSoftAdminStyles:
+    css = {
+        'all': ('admin/css/custom_admin.css',)
+    }
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ('title', 'created_at')
-    Media = CodeSoftMedia
+    class Media:
+        css = {'all': ('admin/css/custom_admin.css',)}
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
     list_display = ('title', 'project', 'assigned_to')
-    Media = CodeSoftMedia
+    class Media:
+        css = {'all': ('admin/css/custom_admin.css',)}
