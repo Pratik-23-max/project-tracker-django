@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-
+import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-your-key'
 DEBUG = True
@@ -44,16 +44,34 @@ TEMPLATES = [
     },
 ]
 
-DATABASES = { 'default': { 'ENGINE': 'django.db.backends.sqlite3', 'NAME': BASE_DIR / 'db.sqlite3' } }
+# my_site/settings.py
+#static file
+STATICFILES_DIRS = [
+    BASE_DIR / "static", # This points to your custom CSS
+]
+STATIC_ROOT = BASE_DIR / "staticfiles" # This is where Django will "build" the production files
 
-# STATIC FILES CONFIG
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'tracker', 'static')]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+
+DATABASES = {
+    'default': dj_database_url.config(
+        # Replace the URL below with the one you copy from your Neon dashboard
+        default='postgresql://neondb_owner:npg_4McQC7RVFfzs@ep-old-bonus-aifn7qw1-pooler.c-4.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require',
+        conn_max_age=600,
+    )
+}
 # REDIRECTS
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'login'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+STATIC_URL = '/static/'
+
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+# This is used for deployment (Professional step!)
+STATIC_ROOT = BASE_DIR / "staticfiles"
