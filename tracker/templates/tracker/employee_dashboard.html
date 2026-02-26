@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="header-section">
+        <h2>Welcome back, <span class="user-highlight">{{ request.user.username }}</span></h2>
+        <p class="subtitle">Here is your current task workload from PostgreSQL Cloud.</p>
+    </div>
+
+    <div class="stats-overview">
+        <div class="stat-card">
+            <span class="stat-number">{{ tasks.count }}</span>
+            <span class="stat-label">Total Tasks</span>
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <table class="task-table">
+            <thead>
+                <tr>
+                    <th>Project Name</th>
+                    <th>Task Description</th>
+                    <th>Current Status</th>
+                    <th style="text-align: center;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                <tr>
+                    <td class="project-cell"><strong>{{ task.project.title }}</strong></td>
+                    <td>{{ task.title }}</td>
+                    <td>
+                        <span class="status-badge status-{{ task.status|lower }}">
+                            {{ task.get_status_display }}
+                        </span>
+                    </td>
+                    <td style="text-align: center;">
+                        <a href="{% url 'update_task' task.id %}" class="btn-update">
+                            Update Progress
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="empty-state">
+                        <div class="relax-icon">☕</div>
+                        <p>No tasks assigned yet. Your schedule is clear!</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    /* Professional Dashboard Styling */
+    .dashboard-container { padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    .user-highlight { color: #2563eb; text-transform: capitalize; }
+    
+    .table-wrapper { 
+        background: white; 
+        border-radius: 8px; 
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
+        overflow: hidden; 
+        margin-top: 20px;
+    }
+
+    .task-table { width: 100%; border-collapse: collapse; }
+    .task-table th { background: #f8fafc; padding: 15px; text-align: left; color: #64748b; font-weight: 600; }
+    .task-table td { padding: 15px; border-top: 1px solid #e2e8f0; vertical-align: middle; }
+
+    /* Status Badge System */
+    .status-badge {
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        display: inline-block;
+    }
+    .status-todo { background: #fee2e2; color: #dc2626; }
+    .status-in_progress { background: #fef9c3; color: #854d0e; }
+    .status-done { background: #dcfce7; color: #166534; }
+
+    .btn-update {
+        background: #2563eb;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: 0.2s;
+    }
+    .btn-update:hover { background: #1d4ed8; }
+</style>
+{% endblock %}
