@@ -15,7 +15,6 @@
 
         body { background-color: var(--bg-warm); font-family: 'Segoe UI', sans-serif; }
         
-        /* Sidebar Styling */
         .sidebar { 
             height: 100vh; 
             background: #ffffff; 
@@ -28,7 +27,6 @@
 
         .main-content { margin-left: 280px; padding: 40px; }
 
-        /* Branding */
         .brand-name {
             color: var(--accent-clay);
             font-weight: 800;
@@ -36,7 +34,6 @@
             letter-spacing: -1px;
         }
 
-        /* Hover Glow Effect */
         .project-card {
             transition: all 0.3s ease;
             border: 1px solid #eee;
@@ -62,19 +59,29 @@
         <p class="text-muted small">Work Management</p>
     </div>
     <nav class="nav flex-column">
-        <a href="{% url 'dashboard' %}" class="nav-link active"><i class="fas fa-th-large me-2"></i> Dashboard</a>
+        <a href="{% url 'dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+            <i class="fas fa-user-tie me-2"></i> Manager Portal
+        </a>
+        <a href="{% url 'employee_dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'employee_dashboard' %}active{% endif %}">
+            <i class="fas fa-tasks me-2"></i> My Tasks
+        </a>
         <a href="{% url 'index' %}" class="nav-link"><i class="fas fa-home me-2"></i> Landing Page</a>
         <hr class="mx-3">
-        <a href="{% url 'logout' %}" class="nav-link text-danger"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
+        <form action="{% url 'logout' %}" method="post" class="px-3">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-link nav-link text-danger border-0 w-100 text-start">
+                <i class="fas fa-sign-out-alt me-2"></i> Logout
+            </button>
+        </form>
     </nav>
 </div>
 
 <div class="main-content">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold m-0">Employee Workspace</h2>
+        <h2 class="fw-bold m-0">Project Overview</h2>
         <div class="input-group" style="max-width: 300px;">
             <span class="input-group-text bg-white border-end-0 text-muted"><i class="fas fa-search"></i></span>
-            <input type="text" id="taskSearch" class="form-control border-start-0" placeholder="Filter tasks..." onkeyup="filterTasks()">
+            <input type="text" id="taskSearch" class="form-control border-start-0" placeholder="Filter projects..." onkeyup="filterTasks()">
         </div>
     </div>
 
@@ -87,23 +94,27 @@
                         <h4 class="fw-bold mb-1 project-title">{{ project.title }}</h4>
                         <p class="text-muted small mb-3">{{ project.description }}</p>
                     </div>
-                    <span class="badge bg-light text-success rounded-pill px-3 py-2 border">Active</span>
+                    <a href="{% url 'project_detail' project.id %}" class="btn btn-sm btn-outline-warning rounded-pill px-3">View Details</a>
                 </div>
                 
-                <div class="progress mb-3" style="height: 6px; border-radius: 10px;">
-                    <div class="progress-bar bg-success" style="width: 75%"></div>
-                </div>
-
-                <div class="task-list">
-                    {% for task in project.tasks.all %}
-                    <div class="d-flex align-items-center py-2 border-bottom-dashed">
-                        <i class="far fa-circle text-muted me-3"></i>
+                <div class="task-list mt-3">
+                    <h6 class="small fw-bold text-uppercase text-muted mb-2">Recent Tasks</h6>
+                    {% for task in project.tasks.all|slice:":3" %}
+                    <div class="d-flex align-items-center py-2 border-bottom border-light">
+                        <i class="fas fa-check-circle {% if task.status == 'DONE' %}text-success{% else %}text-muted{% endif %} me-3"></i>
                         <span class="small">{{ task.title }}</span>
                         <span class="ms-auto badge bg-light text-dark small border">{{ task.assigned_to.username }}</span>
                     </div>
+                    {% empty %}
+                    <p class="small text-muted italic">No tasks created for this project yet.</p>
                     {% endfor %}
                 </div>
             </div>
+        </div>
+        {% empty %}
+        <div class="text-center py-5">
+            <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
+            <p class="text-muted">No projects found. Use the Admin panel to create your first project!</p>
         </div>
         {% endfor %}
     </div>
