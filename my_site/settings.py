@@ -8,10 +8,22 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# 2. Security Settings (Fetched from .env)
+# 2. Security Settings
 SECRET_KEY = os.getenv('SECRET_KEY')
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+
+# FORCE DEBUG TO TRUE TO FIND THE 500 ERROR
+DEBUG = True 
+
 ALLOWED_HOSTS = ['project-tracker-fafq.onrender.com', 'localhost', '127.0.0.1', '.onrender.com']
+
+# ... (keep your existing APPS, MIDDLEWARE, and DATABASES as they are) ...
+
+# 6. Redirects & Defaults
+LOGIN_URL = 'login'
+# Changed to dashboard so users don't get stuck on the landing page
+LOGIN_REDIRECT_URL = 'dashboard' 
+LOGOUT_REDIRECT_URL = 'login'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # 3. Application Definition
 INSTALLED_APPS = [
