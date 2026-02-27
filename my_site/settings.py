@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # 2. Security Settings (Fetched from .env)
 SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.render.com']
+ALLOWED_HOSTS = ['project-tracker-fafq.onrender.com', 'localhost', '127.0.0.1', '.onrender.com']
 
 # 3. Application Definition
 INSTALLED_APPS = [
