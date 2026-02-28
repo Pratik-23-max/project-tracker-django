@@ -2,185 +2,140 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CodeSoft | Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --bg-warm: #fdfbf7;
-            --accent-clay: #e67e22;
-            --text-dark: #2d3436;
+            --primary-blue: #264b5d;
+            --accent-orange: #e67e22;
+            --bg-light: #f4f7f6;
         }
 
-        body { background-color: var(--bg-warm); font-family: 'Segoe UI', sans-serif; overflow-x: hidden; }
+        body { background-color: var(--bg-light); font-family: 'Segoe UI', sans-serif; }
         
-        /* Sidebar Styling */
+        /* Top Navigation Bar */
+        .navbar-custom {
+            background-color: var(--primary-blue);
+            border-bottom: 3px solid var(--accent-orange);
+            padding: 10px 20px;
+        }
+
+        .navbar-brand { color: white !important; font-weight: 800; font-size: 1.5rem; }
+        .brand-orange { color: var(--accent-orange); }
+
+        /* Sidebar Navigation */
         .sidebar { 
-            height: 100vh; 
+            height: calc(100vh - 60px); 
             background: #ffffff; 
-            color: var(--text-dark); 
-            padding-top: 20px; 
-            position: fixed; 
             width: 260px;
-            border-right: 1px solid #eee;
-            z-index: 1000;
+            position: fixed;
+            border-right: 1px solid #ddd;
         }
 
-        .main-content { margin-left: 260px; padding: 40px; min-height: 100vh; }
+        .main-content { margin-left: 260px; padding: 30px; }
 
-        .brand-name {
-            color: var(--accent-clay);
-            font-weight: 800;
-            font-size: 1.5rem;
-            letter-spacing: -1px;
-        }
+        .nav-link { color: #555; padding: 12px 20px; transition: 0.3s; font-weight: 500; }
+        .nav-link:hover { color: var(--accent-orange); background: #fff5ed; }
+        .nav-link.active { color: var(--accent-orange); border-right: 4px solid var(--accent-orange); background: #fff5ed; }
 
-        .project-card {
-            transition: all 0.3s ease;
-            border: 1px solid #eee;
-            border-radius: 16px;
-            background: white;
-        }
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            border-color: var(--accent-clay);
-        }
-
-        .nav-link { color: #636e72; padding: 12px 25px; border-radius: 10px; margin: 5px 15px; transition: 0.2s; border: none; background: none; width: 85%; text-align: left; display: block; text-decoration: none; }
-        .nav-link:hover { background: #f8f9fa; color: var(--accent-clay); }
-        .nav-link.active { background: var(--bg-warm); color: var(--accent-clay); font-weight: 600; }
-
-        /* User Profile Section Styling - Pure Black as requested */
-        .user-info-section {
-            color: #000000 !important; 
-            font-weight: 600;
-        }
-        
-        .logout-btn {
-            color: #000000 !important;
+        /* User Header (Right Side) */
+        .user-header-text { color: #ffffff !important; font-weight: 600; }
+        .logout-btn-custom {
+            color: var(--accent-orange) !important;
+            border: 1px solid var(--accent-orange);
+            border-radius: 20px;
+            padding: 4px 15px;
             text-decoration: none;
             font-size: 0.85rem;
-            border: 1.5px solid #000000;
-            padding: 4px 12px;
-            border-radius: 20px;
             transition: 0.3s;
-            font-weight: 700;
         }
-        
-        .logout-btn:hover {
-            background: #000000;
-            color: #ffffff !important;
-        }
+        .logout-btn-custom:hover { background: var(--accent-orange); color: white !important; }
 
-        .badge-assigned { background: #f8f9fa; color: #636e72; border: 1px solid #ddd; font-size: 0.75rem; }
+        .project-card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: 0.3s;
+        }
+        .project-card:hover { transform: translateY(-5px); }
+        .btn-view { background-color: var(--primary-blue); color: white; border-radius: 6px; }
+        .btn-view:hover { background-color: #1a3440; color: white; }
     </style>
 </head>
 <body>
 
-<div class="sidebar">
-    <div class="text-center mb-4">
-        <span class="brand-name">CodeSoft</span>
-        <p class="text-muted small">Work Management</p>
+<nav class="navbar navbar-custom d-flex justify-content-between align-items-center">
+    <a class="navbar-brand" href="#">CodeSoft <span class="brand-orange">Manager</span></a>
+    
+    <div class="d-flex align-items-center">
+        <span class="user-header-text me-3">
+            <i class="fas fa-user-circle me-1"></i> {{ user.username|upper }}
+        </span>
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn-custom bg-transparent">LOGOUT</button>
+        </form>
     </div>
-    <nav class="nav flex-column">
-        {% if user.is_staff %}
-        <a href="{% url 'dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
-            <i class="fas fa-user-tie me-2"></i> Manager Portal
-        </a>
-        {% endif %}
+</nav>
 
-        <a href="{% url 'employee_dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'employee_dashboard' %}active{% endif %}">
-            <i class="fas fa-tasks me-2"></i> My Task Portal
-        </a>
+<div class="d-flex">
+    <div class="sidebar">
+        <nav class="nav flex-column mt-3">
+            {% if user.is_staff %}
+            <a href="{% url 'dashboard' %}" class="nav-link active">
+                <i class="fas fa-chart-pie me-2"></i> Manager Portal
+            </a>
+            {% endif %}
+            <a href="{% url 'employee_dashboard' %}" class="nav-link">
+                <i class="fas fa-tasks me-2"></i> My Tasks
+            </a>
+            <a href="{% url 'index' %}" class="nav-link">
+                <i class="fas fa-home me-2"></i> Home Page
+            </a>
+        </nav>
+    </div>
 
-        <a href="{% url 'index' %}" class="nav-link"><i class="fas fa-home me-2"></i> Landing Page</a>
-        <hr class="mx-3">
-    </nav>
-</div>
-
-<div class="main-content">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold m-0 text-dark">
-            {% if user.is_staff %}Manager Overview{% else %}My Workspace{% endif %}
-        </h2>
-
-        <div class="d-flex align-items-center user-info-section">
-            <span class="me-3">
-                <i class="fas fa-user-circle me-1"></i> {{ user.username|capfirst }}
-            </span>
-            <form action="{% url 'logout' %}" method="post" style="display: inline;">
-                {% csrf_token %}
-                <button type="submit" class="logout-btn bg-transparent">
-                    LOGOUT <i class="fas fa-sign-out-alt ms-1"></i>
-                </button>
-            </form>
+    <div class="main-content w-100">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold">Project Workspace</h3>
+            <div class="input-group w-25">
+                <input type="text" class="form-control" placeholder="Search projects...">
+                <button class="btn btn-outline-secondary"><i class="fas fa-search"></i></button>
+            </div>
         </div>
-    </div>
 
-    <div class="mb-4">
-        <div class="input-group shadow-sm" style="max-width: 350px;">
-            <span class="input-group-text bg-white border-end-0 text-muted"><i class="fas fa-search"></i></span>
-            <input type="text" id="taskSearch" class="form-control border-start-0" placeholder="Filter your projects..." onkeyup="filterTasks()">
-        </div>
-    </div>
-
-    <div id="projectList" class="row">
-        {% for project in projects %}
-        <div class="col-12 col-xl-6 mb-4">
-            <div class="card project-card h-100 shadow-sm">
-                <div class="card-body p-4">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div>
-                            <h4 class="fw-bold mb-1 project-title text-dark">{{ project.title }}</h4>
-                            <p class="text-muted small mb-0">{{ project.description|truncatechars:100 }}</p>
+        <div class="row">
+            {% for project in projects %}
+            <div class="col-md-6 mb-4">
+                <div class="card project-card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <h5 class="fw-bold">{{ project.title }}</h5>
+                            <a href="{% url 'project_detail' project.id %}" class="btn btn-sm btn-view">Details</a>
                         </div>
-                        <a href="{% url 'project_detail' project.id %}" class="btn btn-sm btn-outline-warning rounded-pill px-3 fw-bold">
-                            View Details
-                        </a>
-                    </div>
-                    
-                    <div class="task-list pt-3 border-top">
-                        <h6 class="small fw-bold text-uppercase text-muted mb-3">Recent Milestone Tasks</h6>
-                        {% for task in project.tasks.all|slice:":3" %}
-                        <div class="d-flex align-items-center py-2">
-                            <i class="fas fa-check-circle {% if task.status == 'DONE' %}text-success{% else %}text-muted{% endif %} me-3"></i>
-                            <span class="small text-dark">{{ task.title }}</span>
-                            <span class="ms-auto badge badge-assigned">{{ task.assigned_to.username }}</span>
+                        <p class="text-muted small mt-2">{{ project.description|truncatechars:80 }}</p>
+                        <hr>
+                        <div class="task-preview">
+                            {% for task in project.tasks.all|slice:":2" %}
+                            <div class="small d-flex justify-content-between mb-1">
+                                <span><i class="fas fa-check-circle text-success me-1"></i> {{ task.title }}</span>
+                                <span class="badge bg-light text-dark">{{ task.assigned_to.username }}</span>
+                            </div>
+                            {% endfor %}
                         </div>
-                        {% empty %}
-                        <p class="small text-muted fst-italic">No tasks assigned to this project yet.</p>
-                        {% endfor %}
                     </div>
                 </div>
             </div>
+            {% empty %}
+            <div class="text-center w-100 py-5">
+                <p class="text-muted">No projects available. Create one in the Admin panel.</p>
+            </div>
+            {% endfor %}
         </div>
-        {% empty %}
-        <div class="col-12 text-center py-5 mt-5">
-            <i class="fas fa-folder-open fa-4x text-muted mb-3"></i>
-            <h5 class="text-muted">No Projects Found</h5>
-            <p class="text-muted small">Projects you create in the Admin panel will appear here.</p>
-            <a href="/admin/tracker/project/add/" class="btn btn-warning rounded-pill px-4 fw-bold mt-2">Create First Project</a>
-        </div>
-        {% endfor %}
     </div>
 </div>
 
-<script>
-    function filterTasks() {
-        let input = document.getElementById('taskSearch').value.toLowerCase();
-        let cards = document.querySelectorAll('.project-card');
-        cards.forEach(card => {
-            let title = card.querySelector('.project-title').innerText.toLowerCase();
-            // Using closest col-12 wrapper to hide the entire grid item
-            let wrapper = card.closest('.col-12');
-            wrapper.style.display = title.includes(input) ? "" : "none";
-        });
-    }
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

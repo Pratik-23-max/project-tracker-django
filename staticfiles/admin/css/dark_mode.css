@@ -1,43 +1,53 @@
-/* Override Django's Dark Mode variables to match your branding */
+/* Force Dark Mode Colors based on CodeSoft Reference */
+:root {
+    /* Header - Dark Blue */
+    --primary: #264b5d;
+    --primary-fg: #f7f7f7;
 
-@media (prefers-color-scheme: dark), html[data-theme="dark"] {
-    :root {
-      /* Primary Branding - Orange */
-      --primary: #e67e22; 
-      --primary-fg: #ffffff; 
+    /* Background - Deep Black */
+    --body-bg: #121212;
+    --darkened-bg: #1b1b1b;
+    --body-fg: #eeeeee;
 
-      /* Backgrounds - White (as requested) */
-      --body-bg: #ffffff; 
-      --darkened-bg: #f8f9fa;
-      --selected-bg: #fff3e0;
-      --selected-row: #fff3e0;
+    /* Accents - Orange and Light Blue */
+    --link-fg: #e67e22; 
+    --accent: #81d4fa;
+    --breadcrumbs-bg: #264b5d;
 
-      /* Text Colors - Black (as requested) */
-      --body-fg: #000000;
-      --body-quiet-color: #333333;
-      --body-medium-color: #000000;
-      --body-loud-color: #000000;
-
-      /* Links and Borders */
-      --link-fg: #e67e22;
-      --link-hover-color: #d35400;
-      --hairline-color: #eeeeee;
-      --border-color: #e67e22;
-
-      /* Breadcrumbs */
-      --breadcrumbs-bg: #e67e22;
-      --breadcrumbs-link-fg: #ffffff;
-
-      /* Buttons */
-      --close-button-bg: #000000;
-      --close-button-hover-bg: #333333;
-
-      /* Keep standard browser behavior */
-      color-scheme: light; /* Forces the browser to treat it as light even in dark mode */
-    }
+    /* Borders and Dividers */
+    --border-color: #353535;
+    --hairline-color: #272727;
+    
+    color-scheme: dark;
 }
 
-/* Ensure icons match your header color */
-.theme-toggle svg {
-    fill: #000000;
+/* Fix the broken header boxes */
+#header {
+    background: #264b5d !important;
+    color: #ffc107 !important; /* CodeSoft Yellow/Orange text */
+    border-bottom: 2px solid #81d4fa;
+}
+
+#branding h1 {
+    color: #ffc107 !important;
+    background-image: none !important; /* Removes the broken black boxes */
+}
+
+/* User Links in top right */
+.user-tools {
+    color: #ffffff !important;
+}
+
+.user-tools a {
+    color: #81d4fa !important;
+}
+
+/* Table Rows and Sidebar */
+.module h2, .module th, .selector-chosen h2 {
+    background: #264b5d !important;
+    color: #ffffff !important;
+}
+
+tr.selected td {
+    background-color: #00363a !important;
 }
