@@ -13,7 +13,13 @@ def index(request):
             return redirect('dashboard')
         return redirect('employee_dashboard')
     return render(request, 'tracker/index.html')
-
+def portal_choice(request):
+    # If not logged in, show the choice page with Login buttons
+    if not request.user.is_authenticated:
+        return render(request, 'tracker/portal_choice.html')
+    
+    # If already logged in, show the choice page with "Enter" buttons
+    return render(request, 'tracker/portal_choice.html')
 def signup(request):
     """Handles new user registration and redirects to the employee portal."""
     if request.method == 'POST':
