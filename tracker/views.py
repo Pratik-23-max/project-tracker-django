@@ -4,7 +4,10 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from .models import Project, Task
 
+# --- PUBLIC VIEWS ---
+
 def index(request):
+    """Sorts users to the correct dashboard based on their role."""
     if request.user.is_authenticated:
         if request.user.is_staff:
             return redirect('dashboard')
@@ -12,6 +15,7 @@ def index(request):
     return render(request, 'tracker/index.html')
 
 def signup(request):
+    """Handles new user registration and redirects to the employee portal."""
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -22,18 +26,38 @@ def signup(request):
         form = UserCreationForm()
     return render(request, 'tracker/signup.html', {'form': form})
 
+# --- MANAGER VIEWS ---
+
 @login_required
 def dashboard(request):
+    """Displays projects managed by the logged-in staff member."""
     projects = Project.objects.filter(manager=request.user)
     return render(request, 'tracker/dashboard.html', {'projects': projects})
 
 @login_required
+def project_detail(request, project_id):
+    """
+    FIXED: Re-added this function to resolve the AttributeError in logs.
+    Shows specific tasks within a project owned by the manager.
+    """
+    project = get_object_or_404(Project, id=project_id, manager=request.user)
+    tasks = project.tasks.all()
+    return render(request, 'tracker/project_detail.html', {
+        'project': project,
+        'tasks': tasks
+    })
+
+# --- EMPLOYEE PORTAL VIEWS ---
+
+@login_required
 def employee_dashboard(request):
+    """Displays tasks assigned specifically to the logged-in user."""
     my_tasks = Task.objects.filter(assigned_to=request.user).order_by('-id')
     return render(request, 'tracker/employee_dashboard.html', {'tasks': my_tasks})
 
 @login_required
 def update_task_status(request, task_id):
+    """Allows employees to update the progress of their assigned tasks."""
     task = get_object_or_404(Task, id=task_id, assigned_to=request.user)
     if request.method == 'POST':
         new_status = request.POST.get('status')
