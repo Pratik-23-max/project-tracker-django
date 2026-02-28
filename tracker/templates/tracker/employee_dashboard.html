@@ -1,96 +1,63 @@
-{% extends 'base.html' %}
-
-{% block content %}
-<div class="dashboard-container">
-    <div class="header-section">
-        <h2>Welcome back, <span class="user-highlight">{{ request.user.username }}</span></h2>
-        <p class="subtitle">Here is your current task workload from PostgreSQL Cloud.</p>
-    </div>
-
-    <div class="stats-overview">
-        <div class="stat-card">
-            <span class="stat-number">{{ tasks.count }}</span>
-            <span class="stat-label">Total Tasks</span>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CodeSoft | Employee Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #fdfbf7; font-family: 'Segoe UI', sans-serif; }
+        .user-header { color: #000000 !important; font-weight: 600; }
+        .status-badge { padding: 5px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .status-todo { background: #fee2e2; color: #dc2626; }
+        .status-in_progress { background: #fef9c3; color: #854d0e; }
+        .status-done { background: #dcfce7; color: #166534; }
+        .btn-update { background: #2563eb; color: white; border-radius: 6px; text-decoration: none; padding: 8px 16px; transition: 0.2s; }
+        .btn-update:hover { background: #1d4ed8; color: white; }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">Welcome, <span style="color: #2563eb;">{{ request.user.username }}</span></h2>
+        <div class="user-header">
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-dark rounded-pill">Logout</button>
+            </form>
         </div>
     </div>
 
-    <div class="table-wrapper">
-        <table class="task-table">
-            <thead>
+    <div class="card shadow-sm border-0 bg-white">
+        <table class="table mb-0">
+            <thead class="table-light">
                 <tr>
-                    <th>Project Name</th>
-                    <th>Task Description</th>
-                    <th>Current Status</th>
-                    <th style="text-align: center;">Action</th>
+                    <th>Project</th>
+                    <th>Task</th>
+                    <th>Status</th>
+                    <th class="text-center">Action</th>
                 </tr>
             </thead>
             <tbody>
                 {% for task in tasks %}
                 <tr>
-                    <td class="project-cell"><strong>{{ task.project.title }}</strong></td>
+                    <td><strong>{{ task.project.title }}</strong></td>
                     <td>{{ task.title }}</td>
                     <td>
                         <span class="status-badge status-{{ task.status|lower }}">
                             {{ task.get_status_display }}
                         </span>
                     </td>
-                    <td style="text-align: center;">
-                        <a href="{% url 'update_task' task.id %}" class="btn-update">
-                            Update Progress
-                        </a>
+                    <td class="text-center">
+                        <a href="{% url 'update_task_status' task.id %}" class="btn-update">Update</a>
                     </td>
                 </tr>
                 {% empty %}
-                <tr>
-                    <td colspan="4" class="empty-state">
-                        <div class="relax-icon">☕</div>
-                        <p>No tasks assigned yet. Your schedule is clear!</p>
-                    </td>
-                </tr>
+                <tr><td colspan="4" class="text-center py-5">No tasks assigned yet. ☕</td></tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
-
-<style>
-    /* Professional Dashboard Styling */
-    .dashboard-container { padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    .user-highlight { color: #2563eb; text-transform: capitalize; }
-    
-    .table-wrapper { 
-        background: white; 
-        border-radius: 8px; 
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
-        overflow: hidden; 
-        margin-top: 20px;
-    }
-
-    .task-table { width: 100%; border-collapse: collapse; }
-    .task-table th { background: #f8fafc; padding: 15px; text-align: left; color: #64748b; font-weight: 600; }
-    .task-table td { padding: 15px; border-top: 1px solid #e2e8f0; vertical-align: middle; }
-
-    /* Status Badge System */
-    .status-badge {
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 0.85rem;
-        font-weight: 600;
-        display: inline-block;
-    }
-    .status-todo { background: #fee2e2; color: #dc2626; }
-    .status-in_progress { background: #fef9c3; color: #854d0e; }
-    .status-done { background: #dcfce7; color: #166534; }
-
-    .btn-update {
-        background: #2563eb;
-        color: white;
-        padding: 8px 16px;
-        border-radius: 6px;
-        text-decoration: none;
-        font-size: 0.9rem;
-        transition: 0.2s;
-    }
-    .btn-update:hover { background: #1d4ed8; }
-</style>
-{% endblock %}
+</body>
+</html>
