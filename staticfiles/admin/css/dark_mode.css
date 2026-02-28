@@ -1,53 +1,100 @@
-/* Force Dark Mode Colors based on CodeSoft Reference */
+/* CodeSoft Professional Dark Theme - Orange Icons */
+
 :root {
-    /* Header - Dark Blue */
+    /* Header & Sidebars - Dark Blue */
     --primary: #264b5d;
     --primary-fg: #f7f7f7;
 
-    /* Background - Deep Black */
+    /* Main Background - Deep Black */
     --body-bg: #121212;
     --darkened-bg: #1b1b1b;
-    --body-fg: #eeeeee;
+    --body-fg: #eeeeee; /* Light grey text for readability */
+    --body-quiet-color: #d0d0d0;
+    --body-loud-color: #ffffff;
 
-    /* Accents - Orange and Light Blue */
+    /* Links, Breadcrumbs & New Small Icon Color - Orange */
     --link-fg: #e67e22; 
-    --accent: #81d4fa;
+    --link-hover-color: #d35400;
     --breadcrumbs-bg: #264b5d;
-
-    /* Borders and Dividers */
+    
+    /* Borders */
     --border-color: #353535;
     --hairline-color: #272727;
-    
+
     color-scheme: dark;
 }
 
-/* Fix the broken header boxes */
-#header {
-    background: #264b5d !important;
-    color: #ffc107 !important; /* CodeSoft Yellow/Orange text */
-    border-bottom: 2px solid #81d4fa;
+/* FIX: Removes the broken black boxes from the header */
+#header, #branding h1 {
+    background-image: none !important; 
+    background-color: #264b5d !important;
+    color: #ffc107 !important; /* Gold/Orange branding text */
 }
 
-#branding h1 {
-    color: #ffc107 !important;
-    background-image: none !important; /* Removes the broken black boxes */
-}
-
-/* User Links in top right */
+/* User Tools (Top Right) Fix */
 .user-tools {
     color: #ffffff !important;
+    font-weight: bold;
 }
 
 .user-tools a {
-    color: #81d4fa !important;
+    color: #81d4fa !important; /* Light blue links for contrast */
 }
 
-/* Table Rows and Sidebar */
+/* SIDEBAR RECENT ACTIONS SIDEBAR */
+#content-related {
+    background: #1b1b1b !important;
+    border-left: 1px solid var(--border-color);
+}
+
+.module {
+    background: #212121 !important;
+    border: 1px solid var(--border-color);
+}
+
+/* FIX: Restore proper background for tables and selector-chosen headers */
 .module h2, .module th, .selector-chosen h2 {
     background: #264b5d !important;
     color: #ffffff !important;
 }
 
-tr.selected td {
-    background-color: #00363a !important;
+/* Breadcrumbs Fix */
+div.breadcrumbs {
+    background: #264b5d !important;
+}
+
+
+/* --- THEME SWITCH / ICONS SIZE FIX --- */
+.theme-toggle {
+    cursor: pointer;
+    border: none;
+    padding: 0;
+    background: transparent;
+    vertical-align: middle;
+    margin-inline-start: 10px; /* Space between text and icons */
+    margin-top: -3px; /* Align vertically with text */
+}
+
+/* FIX: Force new orange color and reduce size to match text */
+.theme-toggle svg.theme-icon-when-auto,
+.theme-toggle svg.theme-icon-when-dark,
+.theme-toggle svg.theme-icon-when-light {
+    fill: #e67e22 !important; /* Forces the orange color for icons */
+    color: #e67e22 !important;
+    height: 1.1rem !important; /* Reduces icon size to match upper text */
+    width: 1.1rem !important;
+    vertical-align: middle;
+    display: none;
+}
+
+/* Handle display based on active theme */
+html[data-theme="auto"] .theme-toggle svg.theme-icon-when-auto,
+html[data-theme="dark"] .theme-toggle svg.theme-icon-when-dark,
+html[data-theme="light"] .theme-toggle svg.theme-icon-when-light {
+    display: inline-block !important; /* Override 'none' only when active */
+}
+
+/* Fully hide screen reader text so we only show the one matching the current theme */
+.theme-toggle .visually-hidden {
+    display: none !important;
 }
