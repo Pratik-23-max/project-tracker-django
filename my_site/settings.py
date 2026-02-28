@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 import dj_database_url
-from dotenv import load_dotenv #
+from dotenv import load_dotenv
 
 # 1. Load Environment Variables
 load_dotenv()
@@ -11,19 +11,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # 2. Security Settings
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-# FORCE DEBUG TO TRUE TO FIND THE 500 ERROR
+# Use environment variable for DEBUG, default to False for safety
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = ['project-tracker-fafq.onrender.com', 'localhost', '127.0.0.1', '.onrender.com']
 
-# ... (keep your existing APPS, MIDDLEWARE, and DATABASES as they are) ...
-
-# 6. Redirects & Defaults
-LOGIN_URL = 'login'
-# Changed to dashboard so users don't get stuck on the landing page
-LOGIN_REDIRECT_URL = 'dashboard' 
-LOGOUT_REDIRECT_URL = 'login'
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# CSRF Trusted Origins - Necessary for Admin buttons to work on Render
+CSRF_TRUSTED_ORIGINS = ['https://project-tracker-fafq.onrender.com']
 
 # 3. Application Definition
 INSTALLED_APPS = [
@@ -33,17 +27,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'tracker',
+    'tracker', # Your app
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', # For static files
+    'whitenoise.middleware.WhiteNoiseMiddleware', # Static files handler
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware', # Re-added (E408)
-    'django.contrib.messages.middleware.MessageMiddleware',      # Re-added (E409)
+    'django.contrib.auth.middleware.AuthenticationMiddleware', # Required for Admin
+    'django.contrib.messages.middleware.MessageMiddleware',      # Required for Admin
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -52,7 +46,7 @@ ROOT_URLCONF = 'my_site.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'], # Cleaner syntax
+        'DIRS': [BASE_DIR / 'templates'], 
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -65,6 +59,8 @@ TEMPLATES = [
     },
 ]
 
+WSGI_APPLICATION = 'my_site.wsgi.application'
+
 # 4. Database Configuration (Neon PostgreSQL)
 DATABASES = {
     'default': dj_database_url.config(
@@ -73,16 +69,17 @@ DATABASES = {
     )
 }
 
-# 5. Static Files (Cleaned up duplicates)
+# 5. Static Files
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# Use WhiteNoise to serve static files in production
+# WhiteNoise storage for production performance
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # 6. Redirects & Defaults
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'index'
+# Using 'index' ensures your views.py logic sorts users correctly
+LOGIN_REDIRECT_URL = 'index' 
 LOGOUT_REDIRECT_URL = 'login'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
