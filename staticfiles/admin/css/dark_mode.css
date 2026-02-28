@@ -1,100 +1,53 @@
-/* CodeSoft Professional Dark Theme - Orange Icons */
+/* --- THEME ICONS SIZE & COLOR FIX --- */
 
-:root {
-    /* Header & Sidebars - Dark Blue */
-    --primary: #264b5d;
-    --primary-fg: #f7f7f7;
-
-    /* Main Background - Deep Black */
-    --body-bg: #121212;
-    --darkened-bg: #1b1b1b;
-    --body-fg: #eeeeee; /* Light grey text for readability */
-    --body-quiet-color: #d0d0d0;
-    --body-loud-color: #ffffff;
-
-    /* Links, Breadcrumbs & New Small Icon Color - Orange */
-    --link-fg: #e67e22; 
-    --link-hover-color: #d35400;
-    --breadcrumbs-bg: #264b5d;
-    
-    /* Borders */
-    --border-color: #353535;
-    --hairline-color: #272727;
-
-    color-scheme: dark;
-}
-
-/* FIX: Removes the broken black boxes from the header */
-#header, #branding h1 {
-    background-image: none !important; 
-    background-color: #264b5d !important;
-    color: #ffc107 !important; /* Gold/Orange branding text */
-}
-
-/* User Tools (Top Right) Fix */
-.user-tools {
-    color: #ffffff !important;
-    font-weight: bold;
-}
-
-.user-tools a {
-    color: #81d4fa !important; /* Light blue links for contrast */
-}
-
-/* SIDEBAR RECENT ACTIONS SIDEBAR */
-#content-related {
-    background: #1b1b1b !important;
-    border-left: 1px solid var(--border-color);
-}
-
-.module {
-    background: #212121 !important;
-    border: 1px solid var(--border-color);
-}
-
-/* FIX: Restore proper background for tables and selector-chosen headers */
-.module h2, .module th, .selector-chosen h2 {
-    background: #264b5d !important;
-    color: #ffffff !important;
-}
-
-/* Breadcrumbs Fix */
-div.breadcrumbs {
-    background: #264b5d !important;
-}
-
-
-/* --- THEME SWITCH / ICONS SIZE FIX --- */
+/* 1. Reset the container to remove the large white boxes */
 .theme-toggle {
     cursor: pointer;
     border: none;
     padding: 0;
-    background: transparent;
+    background: transparent !important;
     vertical-align: middle;
-    margin-inline-start: 10px; /* Space between text and icons */
-    margin-top: -3px; /* Align vertically with text */
+    margin-inline-start: 1px; 
+    margin-top: -3px; 
+    display: inline-flex;
+    align-items: center;
 }
 
-/* FIX: Force new orange color and reduce size to match text */
+/* 2. Force the icons to be small and Orange */
+.theme-toggle svg {
+    /* Set size to match your 'WELCOME, PRATIK_VALSE' text height */
+    height: 1.1rem !important; 
+    width: 1.1rem !important;
+    
+    /* Apply your brand Orange color */
+    fill: #e67e22 !important; 
+    stroke: #e67e22 !important;
+    
+    vertical-align: middle;
+    transition: transform 0.2s ease;
+}
+
+/* 3. Hide all icons by default and only show the active one */
 .theme-toggle svg.theme-icon-when-auto,
 .theme-toggle svg.theme-icon-when-dark,
 .theme-toggle svg.theme-icon-when-light {
-    fill: #e67e22 !important; /* Forces the orange color for icons */
-    color: #e67e22 !important;
-    height: 1.1rem !important; /* Reduces icon size to match upper text */
-    width: 1.1rem !important;
-    vertical-align: middle;
-    display: none;
+    display: none !important;
 }
 
-/* Handle display based on active theme */
-html[data-theme="auto"] .theme-toggle svg.theme-icon-when-auto,
-html[data-theme="dark"] .theme-toggle svg.theme-icon-when-dark,
+/* 4. Display logic based on the current theme data attribute */
+html[data-theme="auto"] .theme-toggle svg.theme-icon-when-auto {
+    display: inline-block !important;
+}
+
+html[data-theme="dark"] .theme-toggle svg.theme-icon-when-dark {
+    display: inline-block !important;
+}
+
 html[data-theme="light"] .theme-toggle svg.theme-icon-when-light {
-    display: inline-block !important; /* Override 'none' only when active */
+    display: inline-block !important;
 }
 
-/* Fully hide screen reader text so we only show the one matching the current theme */
+/* Ensure the visually hidden text remains hidden */
 .theme-toggle .visually-hidden {
     display: none !important;
 }
