@@ -32,5 +32,5 @@ html, body, #container, #content, .dashboard #content {
 }
 
 /* 6. Fix for Table Rows */
-tr.row1 { background: #ffffff !important; }
-tr.row2 { background: #fdfbf7 !important; }
+tr.row1 { background: #04062d !important; }
+tr.row2 { background: #04062d !important; }

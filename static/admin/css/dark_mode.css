@@ -10,11 +10,13 @@
     --darkened-bg: #1b1b1b;
     --body-fg: #eeeeee; /* Light grey text for readability */
     --body-quiet-color: #d0d0d0;
+    --body-medium-color: #e0e0e0;
     --body-loud-color: #ffffff;
 
     /* Links & Accents - Orange */
     --link-fg: #e67e22; 
     --link-hover-color: #d35400;
+    --link-selected-fg: #6f94c6;
     --breadcrumbs-bg: #264b5d;
     
     /* Borders */
@@ -42,11 +44,21 @@
 }
 
 /* Table and Sidebar Adjustments */
-.module h2, .module th {
+.module h2, .module th, .selector-chosen h2 {
     background: #264b5d !important;
     color: #ffffff !important;
 }
 
 div.breadcrumbs {
     background: #264b5d !important;
+}
+
+/* Fix for recent actions sidebar in dark mode */
+#content-main, #content-related {
+    background: var(--body-bg);
+}
+
+.module {
+    background: var(--darkened-bg);
+    border: 1px solid var(--border-color);
 }
