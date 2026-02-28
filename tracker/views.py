@@ -7,11 +7,10 @@ from .models import Project, Task
 # --- PUBLIC VIEWS ---
 
 def index(request):
-    # Fixed: Re-added the function definition and request parameter
     if request.user.is_authenticated:
         if request.user.is_staff:
-            return redirect('dashboard')
-        return redirect('employee_dashboard')
+            return redirect('dashboard') # Managers go here
+        return redirect('employee_dashboard') # Employees go here
     return render(request, 'tracker/index.html')
 
 def signup(request):

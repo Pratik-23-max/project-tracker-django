@@ -15,6 +15,7 @@
 
         body { background-color: var(--bg-warm); font-family: 'Segoe UI', sans-serif; }
         
+        /* Sidebar Styling */
         .sidebar { 
             height: 100vh; 
             background: #ffffff; 
@@ -23,6 +24,7 @@
             position: fixed; 
             width: 260px;
             border-right: 1px solid #eee;
+            z-index: 1000;
         }
 
         .main-content { margin-left: 280px; padding: 40px; }
@@ -46,9 +48,30 @@
             border-color: var(--accent-clay);
         }
 
-        .nav-link { color: #636e72; padding: 12px 25px; border-radius: 10px; margin: 5px 15px; transition: 0.2s; }
+        .nav-link { color: #636e72; padding: 12px 25px; border-radius: 10px; margin: 5px 15px; transition: 0.2s; border: none; background: none; width: 85%; text-align: left; }
         .nav-link:hover { background: #f8f9fa; color: var(--accent-clay); }
         .nav-link.active { background: var(--bg-warm); color: var(--accent-clay); font-weight: 600; }
+
+        /* User Profile Section - Right Upper Side Styling */
+        .user-info-section {
+            color: #000000 !important; /* Force Black color as requested */
+            font-weight: 600;
+        }
+        
+        .logout-btn {
+            color: #000000 !important;
+            text-decoration: none;
+            font-size: 0.9rem;
+            border: 1px solid #000000;
+            padding: 5px 15px;
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background: #000000;
+            color: #ffffff !important;
+        }
     </style>
 </head>
 <body>
@@ -59,26 +82,41 @@
         <p class="text-muted small">Work Management</p>
     </div>
     <nav class="nav flex-column">
+        {% if user.is_staff %}
         <a href="{% url 'dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
             <i class="fas fa-user-tie me-2"></i> Manager Portal
         </a>
+        {% endif %}
+
         <a href="{% url 'employee_dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'employee_dashboard' %}active{% endif %}">
-            <i class="fas fa-tasks me-2"></i> My Tasks
+            <i class="fas fa-tasks me-2"></i> My Task Portal
         </a>
+
         <a href="{% url 'index' %}" class="nav-link"><i class="fas fa-home me-2"></i> Landing Page</a>
         <hr class="mx-3">
-        <form action="{% url 'logout' %}" method="post" class="px-3">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-link nav-link text-danger border-0 w-100 text-start">
-                <i class="fas fa-sign-out-alt me-2"></i> Logout
-            </button>
-        </form>
     </nav>
 </div>
 
 <div class="main-content">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold m-0">Project Overview</h2>
+        <h2 class="fw-bold m-0">
+            {% if user.is_staff %}Manager Overview{% else %}My Workspace{% endif %}
+        </h2>
+
+        <div class="d-flex align-items-center user-info-section">
+            <span class="me-3">
+                <i class="fas fa-user-circle me-1"></i> {{ user.username|capfirst }}
+            </span>
+            <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn bg-transparent">
+                    Logout <i class="fas fa-sign-out-alt ms-1"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="mb-4">
         <div class="input-group" style="max-width: 300px;">
             <span class="input-group-text bg-white border-end-0 text-muted"><i class="fas fa-search"></i></span>
             <input type="text" id="taskSearch" class="form-control border-start-0" placeholder="Filter projects..." onkeyup="filterTasks()">
