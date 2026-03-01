@@ -1,60 +1,50 @@
-/* --- MANUAL SIZE & COLOR ADJUSTMENT FOR THEME TOGGLE --- */
+/* CodeSoft Professional Project - Permanent Dark Theme */
 
-/* 1. Manually set the container box size */
-.theme-toggle {
-    background: transparent !important;
-    border: none !important;
-    padding: 0 !important;
+:root {
+    /* Branding Colors */
+    --primary: #264b5d;      /* Dark Blue Header */
+    --primary-fg: #f7f7f7;
+    --body-bg: #121212;      /* Deep Black Background */
+    --body-fg: #eeeeee;      /* Light Grey Text */
+    --link-fg: #e67e22;      /* Brand Orange */
+    --breadcrumbs-bg: #264b5d;
     
-    /* Manual Size Controls: Change these values to resize the section */
-    width: 5px !important;  
-    height: 5px !important; 
-    
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    vertical-align: middle !important;
-    margin-inline-start: 8px !important;
-    cursor: pointer !important;
+    color-scheme: dark !important;
 }
 
-/* 2. Manually set the Icon Scale and Orange Color */
-.theme-toggle svg {
-    /* Manual Icon Size: Lower this for smaller icons, raise for bigger */
-    height: 1.1rem !important; 
-    width: 1.1rem !important;
-    
-    /* Branding Colors: Orange */
-    fill: #e67e22 !important;   
-    stroke: #e67e22 !important;
-    
-    background: transparent !important;
-    border: none !important;
-    transition: transform 0.2s ease;
-}
-
-/* 3. Logic to display only the active icon */
-.theme-toggle svg.theme-icon-when-auto,
-.theme-toggle svg.theme-icon-when-dark,
-.theme-toggle svg.theme-icon-when-light {
+/* 1. HIDE THE BROKEN THEME TOGGLE ENTIRELY */
+/* This removes the large white boxes and oversized icons for good */
+.theme-toggle, 
+.theme-label-when-auto, 
+.theme-label-when-light, 
+.theme-label-when-dark {
     display: none !important;
 }
 
-html[data-theme="auto"] .theme-toggle svg.theme-icon-when-auto,
-html[data-theme="dark"] .theme-toggle svg.theme-icon-when-dark,
-html[data-theme="light"] .theme-toggle svg.theme-icon-when-light {
-    display: block !important;
-}
-
-/* 4. Hide screen-reader text */
-.theme-toggle .visually-hidden {
-    display: none !important;
-}
-
-/* 5. Header adjustments to prevent vertical stretching */
-#header {
+/* 2. HEADER BRANDING FIX */
+#header, #branding h1 {
+    background-image: none !important; /* Removes broken image squares */
+    background-color: var(--primary) !important;
+    color: #ffc107 !important; /* Gold/Orange Text */
     height: 60px !important;
     display: flex !important;
     align-items: center !important;
-    padding: 0 10px !important;
+}
+
+/* 3. RECENT ACTIONS & SIDEBAR */
+#content-related {
+    background: #1b1b1b !important;
+    border-left: 1px solid #333 !important;
+}
+
+.module h2, .module th {
+    background: var(--primary) !important;
+    color: #ffffff !important;
+}
+
+/* 4. USER TOOLS POSITIONING */
+.user-tools {
+    color: #ffffff !important;
+    font-weight: bold !important;
+    margin-right: 20px !important;
 }

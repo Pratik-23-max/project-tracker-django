@@ -19,4 +19,6 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='tracker/login.html'), name='login'),
     # Note: Modern Django requires a POST request to logout for security
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    # urls.py
+  path('portal-choice/', views.portal_choice, name='portal_choice'),
 ]

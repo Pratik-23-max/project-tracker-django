@@ -1,64 +1,26 @@
-/* CodeSoft Professional Dark Theme Overrides */
+/* CodeSoft Permanent Professional Dark Theme */
 
 :root {
-    /* Header & Primary Accents - Dark Blue */
-    --primary: #264b5d;
-    --primary-fg: #f7f7f7;
-
-    /* Main Background - Deep Black */
-    --body-bg: #121212;
-    --darkened-bg: #1b1b1b;
-    --body-fg: #eeeeee; /* Light grey text for readability */
-    --body-quiet-color: #d0d0d0;
-    --body-medium-color: #e0e0e0;
-    --body-loud-color: #ffffff;
-
-    /* Links & Accents - Orange */
-    --link-fg: #e67e22; 
-    --link-hover-color: #d35400;
-    --link-selected-fg: #6f94c6;
-    --breadcrumbs-bg: #264b5d;
-    
-    /* Borders */
-    --border-color: #353535;
-    --hairline-color: #272727;
-
-    color-scheme: dark;
+    --primary: #264b5d;      /* Dark Blue Header */
+    --body-bg: #121212;      /* Deep Black Background */
+    --body-fg: #eeeeee;      /* Light Text */
+    --link-fg: #e67e22;      /* Orange Accents */
+    color-scheme: dark !important; 
 }
 
-/* FIX: Removes the broken black boxes in the header */
+/* REMOVE THE THEME SWITCHER AND ICONS */
+.theme-toggle, .theme-label-when-auto, .theme-label-when-light, .theme-label-when-dark {
+    display: none !important;
+}
+
+/* Fix for Header Branding */
 #header, #branding h1 {
-    background-image: none !important; 
+    background-image: none !important;
     background-color: #264b5d !important;
-    color: #ffc107 !important; /* CodeSoft Orange/Gold text */
+    color: #ffc107 !important; /* Gold Branding */
 }
 
-/* User Tools (Top Right) Fix */
-.user-tools {
-    color: #ffffff !important;
-    font-weight: bold;
-}
-
-.user-tools a {
-    color: #81d4fa !important; /* Light blue links for contrast */
-}
-
-/* Table and Sidebar Adjustments */
-.module h2, .module th, .selector-chosen h2 {
-    background: #264b5d !important;
-    color: #ffffff !important;
-}
-
-div.breadcrumbs {
-    background: #264b5d !important;
-}
-
-/* Fix for recent actions sidebar in dark mode */
-#content-main, #content-related {
-    background: var(--body-bg);
-}
-
-.module {
-    background: var(--darkened-bg);
-    border: 1px solid var(--border-color);
+/* Ensure background remains black */
+body, #content {
+    background-color: #121212 !important;
 }

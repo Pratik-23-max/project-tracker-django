@@ -11,15 +11,20 @@
             --primary-blue: #264b5d;
             --accent-orange: #e67e22;
             --bg-light: #f4f7f6;
+            --sidebar-black: #111111;
         }
 
-        body { background-color: var(--bg-light); font-family: 'Segoe UI', sans-serif; }
+        body { background-color: var(--bg-light); font-family: 'Segoe UI', sans-serif; overflow-x: hidden; }
         
-        /* Top Navigation Bar */
+        /* Fixed Top Navigation */
         .navbar-custom {
             background-color: var(--primary-blue);
             border-bottom: 3px solid var(--accent-orange);
-            padding: 10px 20px;
+            padding: 10px 25px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
         }
 
         .navbar-brand { color: white !important; font-weight: 800; font-size: 1.5rem; }
@@ -27,41 +32,50 @@
 
         /* Sidebar Navigation */
         .sidebar { 
-            height: calc(100vh - 60px); 
-            background: #000000; 
+            height: 100vh; 
+            background: var(--sidebar-black); 
             width: 260px;
             position: fixed;
-            border-right: 1px solid #524f4f;
+            top: 60px; /* Offset for navbar */
+            border-right: 1px solid #333;
+            padding-top: 20px;
         }
 
-        .main-content { margin-left: 260px; padding: 30px; }
+        .main-content { margin-left: 260px; margin-top: 80px; padding: 30px; }
 
-        .nav-link { color: #555; padding: 12px 20px; transition: 0.3s; font-weight: 500; }
-        .nav-link:hover { color: var(--accent-orange); background: #000000; }
-        .nav-link.active { color: var(--accent-orange); border-right: 4px solid var(--accent-orange); background: #fff5ed; }
+        /* Fixed Sidebar Links */
+        .nav-link { color: #aaaaaa; padding: 12px 25px; transition: 0.3s; font-weight: 500; }
+        .nav-link:hover { color: var(--accent-orange); background: #1a1a1a; }
+        .nav-link.active { 
+            color: var(--accent-orange) !important; 
+            border-right: 4px solid var(--accent-orange); 
+            background: #1a1a1a; 
+        }
 
-        /* User Header (Right Side) */
-        .user-header-text { color: #000000 !important; font-weight: 600; }
+        /* User Header Text (Now White for contrast) */
+        .user-header-text { color: #ffffff !important; font-weight: 600; font-size: 0.9rem; }
+        
         .logout-btn-custom {
             color: var(--accent-orange) !important;
-            border: 1px solid var(--accent-orange);
+            border: 1.5px solid var(--accent-orange);
             border-radius: 20px;
-            padding: 4px 15px;
-            text-decoration: none;
-            font-size: 0.85rem;
+            padding: 4px 18px;
+            font-size: 0.8rem;
+            font-weight: bold;
             transition: 0.3s;
+            text-transform: uppercase;
         }
         .logout-btn-custom:hover { background: var(--accent-orange); color: white !important; }
 
         .project-card {
             border: none;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
             transition: 0.3s;
+            background: white;
         }
         .project-card:hover { transform: translateY(-5px); }
         .btn-view { background-color: var(--primary-blue); color: white; border-radius: 6px; }
-        .btn-view:hover { background-color: #1a3440; color: white; }
     </style>
 </head>
 <body>
@@ -73,7 +87,7 @@
         <span class="user-header-text me-3">
             <i class="fas fa-user-circle me-1"></i> {{ user.username|upper }}
         </span>
-        <form action="{% url 'logout' %}" method="post">
+        <form action="{% url 'logout' %}" method="post" style="display: inline;">
             {% csrf_token %}
             <button type="submit" class="logout-btn-custom bg-transparent">LOGOUT</button>
         </form>
@@ -82,7 +96,7 @@
 
 <div class="d-flex">
     <div class="sidebar">
-        <nav class="nav flex-column mt-3">
+        <nav class="nav flex-column">
             {% if user.is_staff %}
             <a href="{% url 'dashboard' %}" class="nav-link active">
                 <i class="fas fa-chart-pie me-2"></i> Manager Portal
@@ -97,7 +111,7 @@
         </nav>
     </div>
 
-    <div class="main-content w-100">
+    <main class="main-content w-100">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h3 class="fw-bold">Project Workspace</h3>
             <div class="input-group w-25">
@@ -123,6 +137,8 @@
                                 <span><i class="fas fa-check-circle text-success me-1"></i> {{ task.title }}</span>
                                 <span class="badge bg-light text-dark">{{ task.assigned_to.username }}</span>
                             </div>
+                            {% empty %}
+                            <p class="text-muted x-small">No tasks assigned yet.</p>
                             {% endfor %}
                         </div>
                     </div>
@@ -134,7 +150,7 @@
             </div>
             {% endfor %}
         </div>
-    </div>
+    </main>
 </div>
 
 </body>

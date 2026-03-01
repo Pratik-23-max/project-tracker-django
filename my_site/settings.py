@@ -36,8 +36,8 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware', # Fixed admin.E408
-    'django.contrib.messages.middleware.MessageMiddleware',      # Fixed admin.E409
+    'django.contrib.auth.middleware.AuthenticationMiddleware', # Required for logout
+    'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -80,6 +80,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # 6. Redirects & Defaults
 LOGIN_URL = 'login'
 # Using 'index' ensures your views.py logic sorts users correctly
-LOGIN_REDIRECT_URL = 'index' 
-LOGOUT_REDIRECT_URL = 'portal_choice'
+LOGIN_REDIRECT_URL = 'login' 
+# settings.py
+LOGOUT_REDIRECT_URL = 'login'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
