@@ -1,50 +1,71 @@
-/* CodeSoft Professional Project - Permanent Dark Theme */
+/* CodeSoft Cohesive Deep Blue and Black Theme */
 
 :root {
-    /* Branding Colors */
-    --primary: #264b5d;      /* Dark Blue Header */
-    --primary-fg: #f7f7f7;
-    --body-bg: #121212;      /* Deep Black Background */
-    --body-fg: #eeeeee;      /* Light Grey Text */
+    /* Main Branding */
+    --primary: #264b5d;      /* Header/Nav Blue */
+    --primary-fg: #f7f7f7;   /* Bright white text for blue bg */
+    --body-bg: #121212;      /* Black Background */
+    --body-fg: #eeeeee;      /* Off-White Text for main content */
     --link-fg: #e67e22;      /* Brand Orange */
     --breadcrumbs-bg: #264b5d;
-    
     color-scheme: dark !important;
 }
 
-/* 1. HIDE THE BROKEN THEME TOGGLE ENTIRELY */
-/* This removes the large white boxes and oversized icons for good */
-.theme-toggle, 
-.theme-label-when-auto, 
-.theme-label-when-light, 
-.theme-label-when-dark {
+/* 1. Eliminate the broken large theme-switching icons entirely */
+.theme-toggle, .theme-label-when-auto, .theme-label-when-light, .theme-label-when-dark {
     display: none !important;
 }
 
-/* 2. HEADER BRANDING FIX */
-#header, #branding h1 {
-    background-image: none !important; /* Removes broken image squares */
+/* 2. Style the Content Modules and List Tables */
+.module h2, .module th, table thead th {
     background-color: var(--primary) !important;
-    color: #ffc107 !important; /* Gold/Orange Text */
-    height: 60px !important;
-    display: flex !important;
-    align-items: center !important;
+    color: #ffffff !important;
+    font-weight: bold;
 }
 
-/* 3. RECENT ACTIONS & SIDEBAR */
+/* 3. Style the Content Body and Table Rows */
+body, #content, table tbody, .module, #content-main {
+    background-color: var(--body-bg) !important;
+    color: var(--body-fg) !important;
+}
+
+/* 4. Fix for even/odd table row backgrounds */
+table tbody tr.row1, table tbody tr.row1:hover, .module ul li.row1 {
+    background-color: #1a1a1a !important; /* Slightly lighter black for distinction */
+}
+table tbody tr.row2, table tbody tr.row2:hover, .module ul li.row2 {
+    background-color: var(--body-bg) !important;
+}
+
+/* 5. Fix the "Recent Actions" Sidebar (previously a stark white box) */
 #content-related {
-    background: #1b1b1b !important;
+    background-color: #1b1b1b !important; /* Deep grey, not pitch black */
+    color: var(--body-fg) !important;
     border-left: 1px solid #333 !important;
+    padding: 15px;
+    border-radius: 8px;
+}
+#content-related h2 {
+    color: #ffc107 !important; /* Bright gold for visibility */
+    background: transparent !important;
+}
+#content-related h3 {
+    color: #aaaaaa !important; /* Muted grey for section titles */
+}
+#content-related li {
+    background: transparent !important;
+    color: #cccccc !important;
+    border-bottom: 1px solid #333 !important;
 }
 
-.module h2, .module th {
-    background: var(--primary) !important;
-    color: #ffffff !important;
+/* 6. Fix for Header Branding */
+#header, #branding h1 {
+    background-color: var(--primary) !important;
+    color: #ffc107 !important; /* Ensure gold branding text */
 }
-
-/* 4. USER TOOLS POSITIONING */
-.user-tools {
-    color: #ffffff !important;
-    font-weight: bold !important;
-    margin-right: 20px !important;
+#user-tools {
+    color: var(--primary-fg) !important;
+}
+#user-tools a {
+    color: var(--link-fg) !important;
 }
