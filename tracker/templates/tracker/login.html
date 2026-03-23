@@ -1,22 +1,22 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>CodeSoft | Login</title>
     <style>
-        /* This is the magic that centers everything */
         body, html {
             height: 100%;
             margin: 0;
-            background-color: #fdfbf7; /* CodeSoft Cream */
+            background-color: #fdfbf7; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .auth-wrapper {
             display: flex;
-            justify-content: center; /* Centers horizontally */
-            align-items: center;     /* Centers vertically */
-            height: 100vh;           /* Full viewport height */
+            justify-content: center; 
+            align-items: center;    
+            height: 100vh;          
         }
 
         .auth-box {
@@ -31,23 +31,26 @@
         }
 
         h2 {
-            color: #e67e22; /* CodeSoft Clay Orange */
+            color: #e67e22; 
             margin-bottom: 25px;
             font-weight: 800;
         }
 
+        /* FIX: Ensures Django labels and inputs are stacked correctly */
         form p {
-            text-align: left; /* Keeps labels aligned left */
+            text-align: left;
             margin-bottom: 15px;
         }
 
-        input {
+        /* FIX: Targets Django-generated inputs specifically */
+        input[type="text"], input[type="password"], input[type="email"] {
             width: 100%;
-            padding: 10px;
-            margin-top: 5px;
+            padding: 12px;
+            margin-top: 8px;
             border: 1px solid #ddd;
             border-radius: 5px;
-            box-sizing: border-box; /* Ensures padding doesn't break width */
+            box-sizing: border-box; 
+            display: block;
         }
 
         .btn-signin {
@@ -59,12 +62,21 @@
             border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
-            transition: background 0.3s;
-            margin-top: 10px;
+            transition: 0.3s;
+            margin-top: 15px;
         }
 
         .btn-signin:hover {
             background: #d35400;
+        }
+
+        /* Error Message Styling */
+        .errorlist {
+            color: #d63031;
+            list-style: none;
+            padding: 0;
+            font-size: 0.85em;
+            text-align: left;
         }
 
         .signup-link {
@@ -85,8 +97,14 @@
 <div class="auth-wrapper">
     <div class="auth-box">
         <h2>CodeSoft Login</h2>
-        <form method="POST">
+        
+        <form method="POST" action="{% url 'login' %}">
             {% csrf_token %}
+            
+            {% if form.errors %}
+                <p class="errorlist">Invalid username or password. Please try again.</p>
+            {% endif %}
+
             {{ form.as_p }}
             <button type="submit" class="btn-signin">Sign In</button>
         </form>
