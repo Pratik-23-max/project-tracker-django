@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,15 +9,24 @@
     
     <style>
         :root {
-            --primary-blue: #264b5d;
-            --accent-orange: #e67e22;
-            --bg-light: #f4f7f6;
-            --sidebar-black: #111111;
+            --primary-blue: #264b5d;      /* Navy Blue */
+            --accent-orange: #e67e22;     /* Brand Orange */
+            --bg-deep-black: #0d0d0d;    /* Main Background */
+            --bg-card-grey: #1a1a1a;     /* Card Background */
+            --sidebar-black: #111111;    /* Sidebar */
+            --text-white: #ffffff;
+            --text-muted: #aaaaaa;
+            --border-color: #333333;     /* Visible grid lines */
         }
 
-        body { background-color: var(--bg-light); font-family: 'Segoe UI', sans-serif; overflow-x: hidden; }
+        body { 
+            background-color: var(--bg-deep-black); 
+            color: var(--text-white);
+            font-family: 'Segoe UI', sans-serif; 
+            overflow-x: hidden; 
+        }
         
-        /* Fixed Top Navigation */
+        /* Navbar Fixes */
         .navbar-custom {
             background-color: var(--primary-blue);
             border-bottom: 3px solid var(--accent-orange);
@@ -30,21 +40,20 @@
         .navbar-brand { color: white !important; font-weight: 800; font-size: 1.5rem; }
         .brand-orange { color: var(--accent-orange); }
 
-        /* Sidebar Navigation */
+        /* Sidebar Styling */
         .sidebar { 
             height: 100vh; 
             background: var(--sidebar-black); 
             width: 260px;
             position: fixed;
-            top: 60px; /* Offset for navbar */
-            border-right: 1px solid #333;
+            top: 60px;
+            border-right: 1px solid var(--border-color);
             padding-top: 20px;
         }
 
         .main-content { margin-left: 260px; margin-top: 80px; padding: 30px; }
 
-        /* Fixed Sidebar Links */
-        .nav-link { color: #aaaaaa; padding: 12px 25px; transition: 0.3s; font-weight: 500; }
+        .nav-link { color: var(--text-muted); padding: 12px 25px; transition: 0.3s; font-weight: 500; }
         .nav-link:hover { color: var(--accent-orange); background: #1a1a1a; }
         .nav-link.active { 
             color: var(--accent-orange) !important; 
@@ -52,57 +61,63 @@
             background: #1a1a1a; 
         }
 
-        /* User Header Text (Now White for contrast) */
         .user-header-text { color: #ffffff !important; font-weight: 600; font-size: 0.9rem; }
         
+        /* Orange Logout Button */
         .logout-btn-custom {
-            color: var(--accent-orange) !important;
-            border: 1.5px solid var(--accent-orange);
-            border-radius: 20px;
-            padding: 4px 18px;
+            color: white !important;
+            background-color: var(--accent-orange) !important;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 15px;
             font-size: 0.8rem;
             font-weight: bold;
             transition: 0.3s;
             text-transform: uppercase;
         }
-        .logout-btn-custom:hover { background: var(--accent-orange); color: white !important; }
+        .logout-btn-custom:hover { background: #d35400 !important; }
 
+        /* Dark Project Cards */
         .project-card {
-            border: none;
+            border: 1px solid var(--border-color);
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
             transition: 0.3s;
-            background: white;
+            background: var(--bg-card-grey);
+            color: var(--text-white);
         }
-        .project-card:hover { transform: translateY(-5px); }
-        .btn-view { background-color: var(--primary-blue); color: white; border-radius: 6px; }
-    </style>
+        .project-card:hover { 
+            transform: translateY(-5px); 
+            border-color: var(--accent-orange);
+        }
 
-    <style>
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 100%;
-                height: auto;
-                position: static;
-                padding-top: 0;
-            }
-            .main-content {
-                margin-left: 0;
-                margin-top: 20px;
-                padding: 15px;
-            }
-            .navbar-custom {
-                position: static;
-            }
-            .d-flex {
-                flex-direction: column;
-            }
+        .btn-view { 
+            background-color: var(--primary-blue); 
+            color: white; 
+            border: 1px solid var(--accent-orange);
+            border-radius: 6px; 
+        }
+        .btn-view:hover { background-color: #1a3340; color: var(--accent-orange); }
+
+        hr { border-color: var(--border-color); opacity: 1; }
+
+        /* Search Bar Dark Styling */
+        .form-control {
+            background-color: var(--bg-card-grey);
+            border: 1px solid var(--border-color);
+            color: white;
+        }
+        .form-control:focus {
+            background-color: #222;
+            border-color: var(--accent-orange);
+            color: white;
+            box-shadow: none;
         }
     </style>
+</head>
 <body>
 
 <nav class="navbar navbar-custom d-flex justify-content-between align-items-center">
-    <a class="navbar-brand" href="#">CodeSoft <span class="brand-orange">Manager</span></a>
+    <a class="navbar-brand" href="{% url 'index' %}">CodeSoft <span class="brand-orange">Manager</span></a>
     
     <div class="d-flex align-items-center">
         <span class="user-header-text me-3">
@@ -110,7 +125,7 @@
         </span>
         <form action="{% url 'logout' %}" method="post" style="display: inline;">
             {% csrf_token %}
-            <button type="submit" class="logout-btn-custom bg-transparent">LOGOUT</button>
+            <button type="submit" class="logout-btn-custom">LOGOUT</button>
         </form>
     </div>
 </nav>
@@ -134,10 +149,12 @@
 
     <main class="main-content w-100">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h3 class="fw-bold">Project Workspace</h3>
+            <h3 class="fw-bold" style="color: var(--text-white);">Project Workspace</h3>
             <div class="input-group w-25">
                 <input type="text" class="form-control" placeholder="Search projects...">
-                <button class="btn btn-outline-secondary"><i class="fas fa-search"></i></button>
+                <button class="btn btn-outline-secondary" style="border-color: var(--border-color);">
+                    <i class="fas fa-search text-white"></i>
+                </button>
             </div>
         </div>
 
@@ -147,19 +164,20 @@
                 <div class="card project-card h-100">
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
-                            <h5 class="fw-bold">{{ project.title }}</h5>
+                            <h5 class="fw-bold" style="color: var(--accent-orange);">{{ project.title }}</h5>
                             <a href="{% url 'project_detail' project.id %}" class="btn btn-sm btn-view">Details</a>
                         </div>
-                        <p class="text-muted small mt-2">{{ project.description|truncatechars:80 }}</p>
+                        <p class="small mt-2" style="color: var(--text-muted);">{{ project.description|truncatechars:80 }}</p>
                         <hr>
                         <div class="task-preview">
+                            <h6 class="small fw-bold" style="color: var(--primary-blue);">Recent Tasks:</h6>
                             {% for task in project.tasks.all|slice:":2" %}
                             <div class="small d-flex justify-content-between mb-1">
                                 <span><i class="fas fa-check-circle text-success me-1"></i> {{ task.title }}</span>
-                                <span class="badge bg-light text-dark">{{ task.assigned_to.username }}</span>
+                                <span class="badge bg-dark border border-secondary">{{ task.assigned_to.username }}</span>
                             </div>
                             {% empty %}
-                            <p class="text-muted x-small">No tasks assigned yet.</p>
+                            <p class="text-muted small">No tasks assigned yet.</p>
                             {% endfor %}
                         </div>
                     </div>

@@ -1,43 +1,27 @@
-{% extends "tracker/dashboard.html" %}
-{% load static %}
+from django.db import models
+from django.contrib.auth.models import User
 
-{% block content %}
-<div class="container mt-4">
-    <h2 style="color: #e67e22;">{{ project.title }}</h2>
-    <p class="text-muted">{{ project.description }}</p>
+class Project(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    manager = models.ForeignKey(User, on_delete=models.CASCADE, related_name='managed_projects')
+    created_at = models.DateTimeField(auto_now_add=True)
 
-    <hr style="border-color: #264b5d;">
+    def __str__(self):
+        return self.title
 
-    <h4 style="color: #eeeeee;">Add New Task</h4>
-    <form method="POST" style="max-width: 500px;">
-        {% csrf_token %}
-        <div class="mb-3">
-            <input type="text" name="title" class="form-control" placeholder="Task Title" required 
-                   style="background: #1a1a1a; color: #eee; border: 1px solid #264b5d;">
-        </div>
-        <div class="mb-3">
-            <textarea name="description" class="form-control" placeholder="Task Description" required 
-                      style="background: #1a1a1a; color: #eee; border: 1px solid #264b5d;"></textarea>
-        </div>
-        <button type="submit" class="btn" style="background: #e67e22; color: white;">Create Task</button>
-    </form>
+class Task(models.Model):
+    STATUS_CHOICES = [
+        ('Pending', 'Pending'),
+        ('In Progress', 'In Progress'),
+        ('Completed', 'Completed'),
+    ]
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='tasks')
+    title = models.CharField(max_length=200)
+    description = models.TextField() # This ensures your IntegrityError fix works
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
+    assigned_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='tasks')
+    created_at = models.DateTimeField(auto_now_add=True)
 
-    <h4 class="mt-5" style="color: #eeeeee;">Project Tasks</h4>
-    <div class="row">
-        {% for task in project.tasks.all %}
-        <div class="col-md-6 mb-3">
-            <div class="card" style="background: #1b1b1b; border: 1px solid #333; color: #ccc;">
-                <div class="card-body">
-                    <h5 class="card-title" style="color: #e67e22;">{{ task.title }}</h5>
-                    <p>{{ task.description }}</p>
-                    <p><small>Assigned to: <strong>{{ task.assigned_to.username }}</strong></small></p>
-                    <span class="badge" style="background: #264b5d;">{{ task.status }}</span>
-                </div>
-            </div>
-        </div>
-        {% empty %}
-        <p class="text-muted">No tasks added yet.</p>
-        {% endfor %}
-    </div>
-</div>
-{% endblock %}
+    def __str__(self):
+        return self.title

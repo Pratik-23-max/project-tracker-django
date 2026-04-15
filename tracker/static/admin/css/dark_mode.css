@@ -1,0 +1,32 @@
+/* CodeSoft Professional Dark Theme */
+:root {
+    --bg-black: #0d0d0d;
+    --bg-dark-grey: #1a1a1a;
+    --navy-blue: #264b5d;
+    --text-white: #ffffff;
+    --brand-orange: #e67e22;
+    --border-grey: #333333;
+}
+
+body, html, #container, #content {
+    background-color: var(--bg-black) !important;
+    color: var(--text-white) !important;
+}
+
+#header {
+    background: var(--navy-blue) !important;
+    border-bottom: 2px solid var(--brand-orange) !important;
+}
+
+#user-tools a[href*="logout"] {
+    background-color: var(--brand-orange) !important;
+    color: white !important;
+    padding: 5px 12px !important;
+    border-radius: 5px !important;
+    font-weight: bold !important;
+}
+
+.module, .card, .auth-box {
+    background-color: var(--bg-dark-grey) !important;
+    border: 1px solid var(--border-grey) !important;
+}
