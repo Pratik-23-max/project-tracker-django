@@ -80,7 +80,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # 6. Redirects & Defaults
 LOGIN_URL = 'login'
 # Using 'index' ensures your views.py logic sorts users correctly
-LOGIN_REDIRECT_URL = 'login' 
+LOGIN_REDIRECT_URL = 'index' 
 # settings.py
-LOGOUT_REDIRECT_URL = 'login'
+LOGOUT_REDIRECT_URL = 'index'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
