@@ -1,0 +1,17 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "username": "KirtiWalse",
+      "password": "pbkdf2_sha256$720000$8jG8Jg6OZjYQfIEx9Xy315$RqN2vmmYCyvtcX/y0HRTMHtCTwHsh+tTMmTrKESUH3Y=",
+      "email": "kirti@example.com",
+      "is_superuser": true,
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2024-04-16T00:00:00Z",
+      "first_name": "",
+      "last_name": ""
+    }
+  }
+]
