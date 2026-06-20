@@ -1,36 +1,293 @@
-/* FORCE EVERYTHING TO CODESOFT COLORS */
+/* ══════════════════════════════════════════
+   CodeSoft Admin — Full Theme Override
+   Overrides Django's built-in CSS variables
+   ══════════════════════════════════════════ */
 
-/* 1. Force Background to Cream */
-html, body, #container, #content, .dashboard #content {
-    background-color: #fdfbf7 !important;
+/* ── 1. Override ALL Django CSS variables ── */
+:root, html {
+    --primary:             #1e3a5f !important;
+    --secondary:           #00c6a2 !important;
+    --accent:              #00c6a2 !important;
+    --primary-fg:          #fff !important;
+
+    --body-fg:             #1a2332 !important;
+    --body-bg:             #ffffff !important;
+    --body-quiet-color:    #64748b !important;
+    --body-loud-color:     #1e3a5f !important;
+
+    --header-color:        #ffffff !important;
+    --header-branding-color: #00c6a2 !important;
+    --header-bg:           #1e3a5f !important;
+    --header-link-color:   #ffffff !important;
+
+    --breadcrumbs-fg:      #ffffff !important;
+    --breadcrumbs-link-fg: #a5d8f3 !important;
+    --breadcrumbs-bg:      #2a5298 !important;
+
+    --link-fg:             #1e3a5f !important;
+    --link-hover-color:    #00c6a2 !important;
+    --link-selected-fg:    #00c6a2 !important;
+
+    --hairline-color:      #e2e8f0 !important;
+    --border-color:        #e2e8f0 !important;
+
+    --error-fg:            #ef4444 !important;
+
+    --message-success-bg:  #d1faf4 !important;
+    --message-warning-bg:  #fef3c7 !important;
+    --message-error-bg:    #fee2e2 !important;
+
+    --darkened-bg:         #f0f4f8 !important;
+    --selected-bg:         #eef7f5 !important;
+    --selected-row:        #eef7f5 !important;
+
+    --button-fg:           #fff !important;
+    --button-bg:           #1e3a5f !important;
+    --button-hover-bg:     #2a5298 !important;
+    --default-button-bg:   #00c6a2 !important;
+    --default-button-hover-bg: #00997e !important;
+
+    --close-button-bg:     #e2e8f0 !important;
+    --close-button-hover-bg: #cbd5e1 !important;
+
+    --object-tools-fg:     #fff !important;
+    --object-tools-bg:     #1e3a5f !important;
+    --object-tools-hover-bg: #2a5298 !important;
 }
 
-/* 2. Force Header to White with Orange Border */
+/* ── 2. Page background ── */
+html, body, #container, #content-main, #content,
+.dashboard #content, #main, #page-content {
+    background-color: #f0f4f8 !important;
+    font-family: 'Inter', 'Segoe UI', sans-serif !important;
+    color: #1a2332 !important;
+}
+
+/* ── 3. Top header bar ── */
 #header {
-    background: #ffffff !important;
-    color: #2d3436 !important;
-    border-bottom: 5px solid #e67e22 !important;
-}
-
-/* 3. Force Logo to Orange */
-#branding h1, #branding h1 a, #branding h1 span {
-    color: #e67e22 !important;
-}
-
-/* 4. Force Blue Sidebar/Bars to Charcoal */
-#nav-sidebar, .module h2, .module caption, .inline-group h2 {
-    background: #2d3436 !important;
-    color: #ffffff !important;
-}
-
-/* 5. Force Buttons to Orange */
-.button, input[type=submit], .submit-row input {
-    background: #e67e22 !important;
+    background: #1e3a5f !important;
     color: #fff !important;
-    border-radius: 8px !important;
+    border-bottom: 4px solid #00c6a2 !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15) !important;
+    font-family: 'Inter', 'Segoe UI', sans-serif !important;
+}
+#branding h1, #branding h1 a, #branding h1 * {
+    color: #00c6a2 !important;
+    font-weight: 800 !important;
+    font-family: 'Inter', 'Segoe UI', sans-serif !important;
+}
+#user-tools, #user-tools a {
+    color: rgba(255,255,255,0.85) !important;
+    font-size: 0.82rem !important;
+}
+#user-tools a:hover { color: #00c6a2 !important; }
+
+/* ── 4. Breadcrumbs ── */
+div.breadcrumbs {
+    background: #2a5298 !important;
+    color: #fff !important;
+    padding: 10px 24px !important;
+    font-size: 0.85rem !important;
+}
+div.breadcrumbs a { color: #a5d8f3 !important; }
+div.breadcrumbs a:hover { color: #fff !important; }
+
+/* ── 5. Sidebar ── */
+#nav-sidebar {
+    background: #1e3a5f !important;
+    border-right: none !important;
+    box-shadow: 3px 0 16px rgba(0,0,0,0.12) !important;
+}
+#nav-sidebar .sidebar-title {
+    color: rgba(255,255,255,0.40) !important;
+    font-size: 0.68rem !important;
+    letter-spacing: 1.5px !important;
+    text-transform: uppercase !important;
+}
+#nav-sidebar a, #nav-sidebar a:link, #nav-sidebar a:visited {
+    color: rgba(255,255,255,0.70) !important;
+    font-size: 0.87rem !important;
+}
+#nav-sidebar a:hover {
+    color: #fff !important;
+    background: rgba(255,255,255,0.08) !important;
+}
+#nav-sidebar .current-app .section:link,
+#nav-sidebar .current-app .section:visited {
+    color: #00c6a2 !important;
+    border-left: 3px solid #00c6a2 !important;
+    font-weight: 600 !important;
+}
+.toggle-nav-sidebar { color: rgba(255,255,255,0.6) !important; }
+
+/* ── 6. Module / section headings ── */
+.module h2, .module caption, .inline-group h2 {
+    background: #1e3a5f !important;
+    color: #fff !important;
+    border-radius: 10px 10px 0 0 !important;
+    padding: 12px 18px !important;
+    font-size: 0.85rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.3px !important;
     border: none !important;
 }
 
-/* 6. Fix for Table Rows */
-tr.row1 { background: #04062d !important; }
-tr.row2 { background: #04062d !important; }
+/* ── 7. Module card wrapper ── */
+.module {
+    border: 1.5px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 16px rgba(30,58,95,0.07) !important;
+    overflow: hidden !important;
+    margin-bottom: 20px !important;
+    background: #fff !important;
+}
+
+/* ── 8. Table rows ── */
+#result_list tr.row1, tr.row1 { background: #ffffff !important; }
+#result_list tr.row2, tr.row2 { background: #f8fafc !important; }
+#result_list tr:hover td, tr:hover td { background: #eef7f5 !important; }
+#result_list thead th {
+    background: #f0f4f8 !important;
+    color: #64748b !important;
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.6px !important;
+    border-bottom: 2px solid #e2e8f0 !important;
+}
+th a, th a:link, th a:visited { color: #1e3a5f !important; font-weight: 700 !important; }
+
+/* ── 9. Links ── */
+a:link, a:visited { color: #1e3a5f !important; }
+a:hover { color: #00c6a2 !important; }
+.addlink, .changelink { color: #1e3a5f !important; font-weight: 600 !important; }
+.addlink:hover, .changelink:hover { color: #00c6a2 !important; }
+
+/* ── 10. Buttons ── */
+.button, input[type=submit], .submit-row input,
+.submit-row a, .object-tools a {
+    background: #1e3a5f !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 9px 20px !important;
+    font-weight: 600 !important;
+    font-family: 'Inter', 'Segoe UI', sans-serif !important;
+    font-size: 0.85rem !important;
+    cursor: pointer !important;
+    transition: background 0.2s !important;
+}
+.button:hover, input[type=submit]:hover,
+.submit-row input:hover, .object-tools a:hover {
+    background: #2a5298 !important;
+    color: #fff !important;
+}
+.button.default, input[type=submit].default,
+input[name=_save] {
+    background: #00c6a2 !important;
+    color: #1e3a5f !important;
+    font-weight: 700 !important;
+}
+.button.default:hover, input[type=submit].default:hover,
+input[name=_save]:hover {
+    background: #00997e !important;
+    color: #fff !important;
+}
+
+/* ── 11. Search bar ── */
+#toolbar { background: #f8fafc !important; border-bottom: 1px solid #e2e8f0 !important; }
+#changelist-search input[type=text] {
+    border: 1.5px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    background: #fff !important;
+    padding: 8px 12px !important;
+    color: #1a2332 !important;
+    font-family: 'Inter', 'Segoe UI', sans-serif !important;
+}
+#changelist-search input[type=text]:focus {
+    border-color: #00c6a2 !important;
+    box-shadow: 0 0 0 3px rgba(0,198,162,0.15) !important;
+    outline: none !important;
+}
+#changelist-search input[type=submit] {
+    background: #1e3a5f !important;
+    border-radius: 8px !important;
+    color: #fff !important;
+}
+
+/* ── 12. Filter sidebar ── */
+#changelist-filter {
+    background: #fff !important;
+    border: 1.5px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+}
+#changelist-filter h2 {
+    background: #1e3a5f !important;
+    color: #fff !important;
+    border-radius: 10px 10px 0 0 !important;
+    padding: 12px 16px !important;
+    font-size: 0.82rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+#changelist-filter h3 { color: #64748b !important; font-size: 0.8rem !important; text-transform: uppercase !important; }
+#changelist-filter li.selected a { color: #00c6a2 !important; font-weight: 700 !important; }
+
+/* ── 13. Form inputs ── */
+input[type=text], input[type=password], input[type=email],
+input[type=url], input[type=number], select, textarea {
+    border: 1.5px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    background: #f8fafc !important;
+    color: #1a2332 !important;
+    font-family: 'Inter', 'Segoe UI', sans-serif !important;
+    padding: 8px 12px !important;
+}
+input:focus, select:focus, textarea:focus {
+    border-color: #00c6a2 !important;
+    box-shadow: 0 0 0 3px rgba(0,198,162,0.15) !important;
+    outline: none !important;
+    background: #fff !important;
+}
+
+/* ── 14. Messages ── */
+.messagelist li {
+    border-radius: 8px !important;
+    padding: 10px 16px !important;
+    font-size: 0.88rem !important;
+    margin-bottom: 8px !important;
+}
+.messagelist .success {
+    background: #d1faf4 !important; color: #00644f !important;
+    border-left: 4px solid #00c6a2 !important;
+}
+.messagelist .warning {
+    background: #fef3c7 !important; color: #92400e !important;
+    border-left: 4px solid #f59e0b !important;
+}
+.messagelist .error {
+    background: #fee2e2 !important; color: #991b1b !important;
+    border-left: 4px solid #ef4444 !important;
+}
+
+/* ── 15. Pagination ── */
+.paginator a, .paginator .this-page {
+    border: 1.5px solid #e2e8f0 !important;
+    border-radius: 7px !important;
+    padding: 5px 11px !important;
+    margin: 0 2px !important;
+    font-size: 0.85rem !important;
+    color: #1e3a5f !important;
+    background: #fff !important;
+}
+.paginator .this-page {
+    background: #1e3a5f !important;
+    color: #fff !important;
+    border-color: #1e3a5f !important;
+}
+.paginator a:hover { border-color: #00c6a2 !important; color: #00c6a2 !important; }
+
+/* ── 16. Dashboard recent actions ── */
+#recent-actions-module { background: #fff !important; }
+#recent-actions-module h2 { background: #1e3a5f !important; color: #fff !important; }

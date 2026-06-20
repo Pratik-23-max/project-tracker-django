@@ -2,42 +2,95 @@
 {% load static %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2 style="color: #e67e22;">{{ project.title }}</h2>
-    <p class="text-muted">{{ project.description }}</p>
+<style>
+    .detail-header {
+        background: #fff; border: 1.5px solid var(--border);
+        border-radius: 16px; padding: 28px 30px; margin-bottom: 28px;
+        box-shadow: var(--shadow);
+    }
+    .detail-header h2 { font-size: 1.5rem; font-weight: 800; color: var(--primary); margin-bottom: 6px; }
+    .detail-header p { color: var(--text-muted); font-size: 0.9rem; margin: 0; }
+    .form-card {
+        background: #fff; border: 1.5px solid var(--border);
+        border-radius: 16px; padding: 28px 30px; margin-bottom: 28px;
+        box-shadow: var(--shadow);
+    }
+    .form-card h4 { font-size: 1rem; font-weight: 700; color: var(--primary); margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+    .form-card h4 i { color: var(--accent); }
+    .field-group { margin-bottom: 14px; }
+    .field-group label { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .field-group input, .field-group textarea {
+        width: 100%; padding: 10px 14px;
+        border: 1.5px solid var(--border); border-radius: 9px;
+        font-family: 'Inter', sans-serif; font-size: 0.88rem; color: var(--text);
+        background: var(--bg); transition: 0.2s; display: block;
+    }
+    .field-group input:focus, .field-group textarea:focus {
+        border-color: var(--accent); outline: none;
+        box-shadow: 0 0 0 3px rgba(0,198,162,0.15); background: #fff;
+    }
+    .field-group textarea { min-height: 90px; resize: vertical; }
+    .btn-create {
+        background: var(--primary); color: #fff; border: none;
+        border-radius: 9px; padding: 10px 22px; font-size: 0.85rem;
+        font-weight: 700; cursor: pointer; transition: 0.2s;
+        display: flex; align-items: center; gap: 7px;
+    }
+    .btn-create:hover { background: var(--primary-light); transform: translateY(-1px); }
+    .tasks-grid { display: flex; flex-direction: column; gap: 14px; }
+    .task-item {
+        background: #fff; border: 1.5px solid var(--border);
+        border-radius: 12px; padding: 18px 20px; box-shadow: var(--shadow);
+        display: flex; justify-content: space-between; align-items: flex-start; gap: 14px;
+    }
+    .task-item:hover { border-color: var(--accent); }
+    .task-item h5 { font-size: 0.95rem; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+    .task-item p { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 6px; }
+    .task-item small { font-size: 0.78rem; color: var(--text-muted); }
+    .task-item small strong { color: var(--primary); }
+    .status-badge {
+        display: inline-block; padding: 4px 12px; border-radius: 20px;
+        font-size: 0.75rem; font-weight: 700;
+        background: #dbeafe; color: #1d4ed8; white-space: nowrap; flex-shrink: 0;
+    }
+    .section-title { font-size: 1rem; font-weight: 700; color: var(--primary); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .section-title i { color: var(--accent); }
+</style>
 
-    <hr style="border-color: #264b5d;">
+<div class="detail-header">
+    <h2><i class="fas fa-folder-open me-2" style="color:var(--accent);"></i>{{ project.title }}</h2>
+    <p>{{ project.description }}</p>
+</div>
 
-    <h4 style="color: #eeeeee;">Add New Task</h4>
-    <form method="POST" style="max-width: 500px;">
+<div class="form-card" style="max-width:560px;">
+    <h4><i class="fas fa-plus-circle"></i> Add New Task</h4>
+    <form method="POST">
         {% csrf_token %}
-        <div class="mb-3">
-            <input type="text" name="title" class="form-control" placeholder="Task Title" required 
-                   style="background: #1a1a1a; color: #eee; border: 1px solid #264b5d;">
+        <div class="field-group">
+            <label>Task Title</label>
+            <input type="text" name="title" placeholder="e.g. Design wireframes" required>
         </div>
-        <div class="mb-3">
-            <textarea name="description" class="form-control" placeholder="Task Description" required 
-                      style="background: #1a1a1a; color: #eee; border: 1px solid #264b5d;"></textarea>
+        <div class="field-group">
+            <label>Description</label>
+            <textarea name="description" placeholder="Describe the task…" required></textarea>
         </div>
-        <button type="submit" class="btn" style="background: #e67e22; color: white;">Create Task</button>
+        <button type="submit" class="btn-create"><i class="fas fa-plus"></i> Create Task</button>
     </form>
+</div>
 
-    <h4 class="mt-5" style="color: #eeeeee;">Project Tasks</h4>
-    <div class="row">
-        {% for task in project.tasks.all %}
-        <div class="col-md-6 mb-3">
-            <div class="card" style="background: #1b1b1b; border: 1px solid #333; color: #ccc;">
-                <div class="card-body">
-                    <h5 class="card-title" style="color: #e67e22;">{{ task.title }}</h5>
-                    <p>{{ task.description }}</p>
-                    <p><small>Assigned to: <strong>{{ task.assigned_to.username }}</strong></small></p>
-                    <span class="badge" style="background: #264b5d;">{{ task.status }}</span>
-                </div>
-            </div>
+<div class="section-title"><i class="fas fa-list-check"></i> Project Tasks</div>
+<div class="tasks-grid">
+    {% for task in project.tasks.all %}
+    <div class="task-item">
+        <div>
+            <h5>{{ task.title }}</h5>
+            <p>{{ task.description }}</p>
+            <small>Assigned to: <strong>{{ task.assigned_to.username }}</strong></small>
         </div>
-        {% empty %}
-        <p class="text-muted">No tasks added yet.</p>
-        {% endfor %}
+        <span class="status-badge">{{ task.status }}</span>
     </div>
+    {% empty %}
+    <p style="color:var(--text-muted);font-size:0.9rem;padding:20px 0;">No tasks added yet.</p>
+    {% endfor %}
 </div>
 {% endblock %}

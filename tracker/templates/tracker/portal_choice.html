@@ -1,163 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodeSoft | Welcome</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --clay-orange: #e67e22;
-            --charcoal: #2d3436;
-            --cream: #fdfbf7;
-            --white: #ffffff;
-        }
+{% extends 'base.html' %}
+{% load static %}
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'DM Sans', sans-serif;
-            background-color: var(--cream);
-            color: var(--charcoal);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
-
-        .header-section {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .header-section h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--charcoal);
-            margin-bottom: 10px;
-        }
-
-        .header-section span {
-            color: var(--clay-orange);
-        }
-
-        .container {
-            display: flex;
-            gap: 30px;
-            max-width: 900px;
-            width: 90%;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .portal-card {
-            background: var(--white);
-            border: 1px solid #eee;
-            border-radius: 20px;
-            padding: 40px;
-            width: 350px;
-            text-align: center;
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .portal-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(230, 126, 34, 0.15);
-            border-color: var(--clay-orange);
-        }
-
-        .icon-circle {
-            width: 80px;
-            height: 80px;
-            background: var(--cream);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            margin-bottom: 20px;
-            transition: background 0.3s;
-        }
-
-        .portal-card:hover .icon-circle {
-            background: var(--clay-orange);
-        }
-
-        .portal-card h2 {
-            margin: 0 0 15px 0;
-            font-size: 1.5rem;
-            color: var(--charcoal);
-        }
-
-        .portal-card p {
-            font-size: 0.95rem;
-            color: #636e72;
-            line-height: 1.6;
-            margin-bottom: 25px;
-        }
-
-        .btn-enter {
-            padding: 12px 25px;
-            background: var(--charcoal);
-            color: white;
-            border-radius: 10px;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-            transition: background 0.3s;
-        }
-
-        .portal-card:hover .btn-enter {
-            background: var(--clay-orange);
-        }
-
-        .logout-link {
-            margin-top: 40px;
-            color: #b2bec3;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        .logout-link:hover {
-            color: var(--clay-orange);
-        }
-    </style>
-</head>
-<body>
-
-    <div class="header-section">
-        <h1>Welcome to <span>CodeSoft</span></h1>
-        <p>Select a workspace to begin your session.</p>
+{% block content %}
+<div class="auth-container-wrapper" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #1a1a2e; margin: 0; padding: 1rem; box-sizing: border-box;">
+    <div class="portal-selection-card" style="background: #222242; padding: 3rem 2.5rem; border-radius: 16px; box-shadow: 0 12px 32px rgba(0,0,0,0.4); width: 100%; max-width: 440px; text-align: center; border: 1px solid rgba(255,255,255,0.05);">
+        
+        <div style="margin-bottom: 2rem;">
+            <span style="background: rgba(233, 69, 96, 0.1); color: #e94560; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;">
+                Agile Project Tracker
+            </span>
+            <h2 style="color: #ffffff; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; margin: 1rem 0 0.5rem 0; font-weight: 600; font-size: 1.8rem;">
+                Select Workspace Portal
+            </h2>
+            <p style="color: #a0a0b8; font-size: 0.95rem; margin: 0;">
+                Choose your access level to manage your sprints and updates.
+            </p>
+        </div>
+        
+        <div class="selection-options-wrapper" style="display: flex; flex-direction: column; gap: 1.25rem;">
+            
+            <a href="{% url 'login' %}?role=manager" class="portal-btn manager-choice" style="display: block; padding: 1.25rem; border-radius: 10px; background: #e94560; color: #ffffff; text-decoration: none; font-weight: 600; font-size: 1.1rem; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); border: 2px solid #e94560; box-shadow: 0 4px 14px rgba(233, 69, 96, 0.3);">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 0.75rem;">
+                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <polyline points="17 11 19 13 23 9"></polyline>
+                    </svg>
+                    Manager Portal
+                </div>
+            </a>
+            
+            <a href="{% url 'login' %}?role=employee" class="portal-btn employee-choice" style="display: block; padding: 1.25rem; border-radius: 10px; background: transparent; color: #ffffff; text-decoration: none; font-weight: 600; font-size: 1.1rem; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); border: 2px solid rgba(255,255,255,0.15);">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 0.75rem;">
+                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                    </svg>
+                    Employee Portal
+                </div>
+            </a>
+        </div>
+        
     </div>
+</div>
 
-    <div class="container">
-        <a href="/admin/" class="portal-card">
-            <div class="icon-circle">💼</div>
-            <h2>Manager Portal</h2>
-            <p>Full access to database, project creation, and user management tools.</p>
-            <div class="btn-enter">Access Admin</div>
-        </a>
-
-        <a href="{% url 'dashboard' %}" class="portal-card">
-            <div class="icon-circle">✍️</div>
-            <h2>Employee Workspace</h2>
-            <p>View your assigned projects and update your current task status.</p>
-            <div class="btn-enter">Enter Dashboard</div>
-        </a>
-    </div>
-
-    {% if user.is_authenticated %}
-    <a href="{% url 'logout' %}" class="logout-link">Sign Out of Account</a>
-    {% endif %}
-
-</body>
-</html>
+<style>
+    /* CSS Pseudo-classes for smooth matching UI interaction states */
+    .portal-btn:hover {
+        transform: translateY(-2px);
+    }
+    .manager-choice:hover {
+        background: #ff5270 !important;
+        border-color: #ff5270 !important;
+        box-shadow: 0 6px 20px rgba(233, 69, 96, 0.5) !important;
+    }
+    .employee-choice:hover {
+        background: rgba(255, 255, 255, 0.04) !important;
+        border-color: #e94560 !important;
+        color: #e94560 !important;
+    }
+</style>
+{% endblock %}

@@ -1,119 +1,69 @@
+{% extends 'tracker/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>CodeSoft | Login</title>
-    <style>
-        body, html {
-            height: 100%;
-            margin: 0;
-            background-color: #fdfbf7; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
 
-        .auth-wrapper {
-            display: flex;
-            justify-content: center; 
-            align-items: center;    
-            height: 100vh;          
-        }
+{% block content %}
+<div class="login-wrapper" style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle at center, #f4f7f9 0%, #e9eff2 100%); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; margin: 0; padding: 1.5rem; box-sizing: border-box;">
+    
+    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#00b4d8" stroke="#00b4d8" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M2 12L12 17L22 12" stroke="#00b4d8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 17L12 22L22 17" stroke="#00b4d8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span style="font-weight: 700; font-size: 1.4rem; color: #1e3a5f; letter-spacing: -0.3px;">Code<span style="color: #00b4d8;">Soft</span></span>
+    </div>
 
-        .auth-box {
-            width: 100%;
-            max-width: 400px;
-            padding: 40px;
-            background: #ffffff;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            text-align: center;
-            border: 1px solid #eee;
-        }
-
-        h2 {
-            color: #e67e22; 
-            margin-bottom: 25px;
-            font-weight: 800;
-        }
-
-        /* FIX: Ensures Django labels and inputs are stacked correctly */
-        form p {
-            text-align: left;
-            margin-bottom: 15px;
-        }
-
-        /* FIX: Targets Django-generated inputs specifically */
-        input[type="text"], input[type="password"], input[type="email"] {
-            width: 100%;
-            padding: 12px;
-            margin-top: 8px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-sizing: border-box; 
-            display: block;
-        }
-
-        .btn-signin {
-            width: 100%;
-            padding: 12px;
-            background: #e67e22;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            margin-top: 15px;
-        }
-
-        .btn-signin:hover {
-            background: #d35400;
-        }
-
-        /* Error Message Styling */
-        .errorlist {
-            color: #d63031;
-            list-style: none;
-            padding: 0;
-            font-size: 0.85em;
-            text-align: left;
-        }
-
-        .signup-link {
-            display: block;
-            margin-top: 20px;
-            color: #636e72;
-            text-decoration: none;
-            font-size: 0.9em;
-        }
-
-        .signup-link strong {
-            color: #e67e22;
-        }
-    </style>
-</head>
-<body>
-
-<div class="auth-wrapper">
-    <div class="auth-box">
-        <h2>CodeSoft Login</h2>
+    <div class="login-card" style="background: #ffffff; padding: 3rem 2.5rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(30, 58, 95, 0.04); width: 100%; max-width: 400px; box-sizing: border-box; border: 1px solid rgba(30, 58, 95, 0.03);">
         
-        <form method="POST" action="{% url 'login' %}">
+        <div style="margin-bottom: 2rem;">
+            <h2 style="color: #1e3a5f; font-size: 1.8rem; font-weight: 700; margin: 0 0 0.5rem 0; letter-spacing: -0.5px;">Welcome back</h2>
+            <p style="color: #64748b; font-size: 0.95rem; margin: 0;">Sign in to your account to continue</p>
+        </div>
+
+        <form method="POST" action="?role={{ request.GET.role }}" style="display: flex; flex-direction: column; gap: 1.25rem;">
             {% csrf_token %}
             
-            {% if form.errors %}
-                <p class="errorlist">Invalid username or password. Please try again.</p>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; text-align: left;">
+                <label for="id_username" style="color: #1e3a5f; font-size: 0.9rem; font-weight: 600;">Username:</label>
+                <input type="text" name="username" id="id_username" required autofocus placeholder="Enter your username"
+                       style="width: 100%; padding: 0.85rem 1rem; border-radius: 10px; border: 1px solid #00b4d8; background: #ffffff; color: #1e3a5f; font-size: 0.95rem; outline: none; box-sizing: border-box; transition: box-shadow 0.2s ease;">
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; text-align: left;">
+                <label for="id_password" style="color: #1e3a5f; font-size: 0.9rem; font-weight: 600;">Password:</label>
+                <input type="password" name="password" id="id_password" required placeholder="Enter your password"
+                       style="width: 100%; padding: 0.85rem 1rem; border-radius: 10px; border: 1px solid rgba(30, 58, 95, 0.08); background: #f1f5f9; color: #1e3a5f; font-size: 0.95rem; outline: none; box-sizing: border-box; transition: border-color 0.2s ease;">
+            </div>
+
+            {% if form.errors or error %}
+            <div style="color: #ef4444; font-size: 0.85rem; text-align: left; background: #fef2f2; padding: 0.75rem; border-radius: 8px; border: 1px solid #fca5a5;">
+                Invalid credentials. Please verify your login parameter inputs and try again.
+            </div>
             {% endif %}
 
-            {{ form.as_p }}
-            <button type="submit" class="btn-signin">Sign In</button>
+            <button type="submit" class="signin-submit-btn" style="width: 100%; background: #1e3a5f; color: #ffffff; border: none; padding: 1rem; border-radius: 10px; font-weight: 600; font-size: 1rem; cursor: pointer; margin-top: 0.5rem; transition: background 0.2s ease; box-shadow: 0 4px 12px rgba(30, 58, 95, 0.15);">
+                Sign In
+            </button>
         </form>
-        
-        <a href="{% url 'signup' %}" class="signup-link">
-            New member? <strong>Create an Account</strong>
-        </a>
+
+        <div style="margin-top: 2rem; text-align: center; font-size: 0.9rem; color: #64748b;">
+            New member? <a href="{% url 'signup' %}" style="color: #00b4d8; text-decoration: none; font-weight: 600;">Create an Account</a>
+        </div>
+
     </div>
 </div>
 
-</body>
-</html>
+<style>
+    /* Focus and Hover Micro-interactions matching your explicit style rules */
+    #id_username:focus {
+        box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.15) !important;
+    }
+    #id_password:focus {
+        border-color: #00b4d8 !important;
+        background: #ffffff !important;
+    }
+    .signin-submit-btn:hover {
+        background: #12253f !important;
+    }
+</style>
+{% endblock %}

@@ -1,36 +1,76 @@
-/* FORCE EVERYTHING TO CODESOFT COLORS */
-
-/* 1. Force Background to Cream */
-html, body, #container, #content, .dashboard #content {
-    background-color: #fdfbf7 !important;
+/* Force Django's own CSS variables — this is what actually controls the dark theme */
+:root {
+    --primary:             #1e3a5f;
+    --secondary:           #00c6a2;
+    --primary-fg:          #fff;
+    --body-fg:             #1a2332;
+    --body-bg:             #f0f4f8;
+    --body-quiet-color:    #64748b;
+    --body-loud-color:     #1e3a5f;
+    --header-color:        #fff;
+    --header-branding-color: #00c6a2;
+    --header-bg:           #1e3a5f;
+    --header-link-color:   #fff;
+    --breadcrumbs-fg:      #fff;
+    --breadcrumbs-link-fg: #a5d8f3;
+    --breadcrumbs-bg:      #2a5298;
+    --link-fg:             #1e3a5f;
+    --link-hover-color:    #00c6a2;
+    --link-selected-fg:    #00c6a2;
+    --hairline-color:      #e2e8f0;
+    --border-color:        #e2e8f0;
+    --darkened-bg:         #f0f4f8;
+    --selected-bg:         #eef7f5;
+    --selected-row:        #eef7f5;
+    --button-fg:           #fff;
+    --button-bg:           #1e3a5f;
+    --button-hover-bg:     #2a5298;
+    --default-button-bg:   #00c6a2;
+    --default-button-hover-bg: #00997e;
+    --object-tools-fg:     #fff;
+    --object-tools-bg:     #1e3a5f;
+    --object-tools-hover-bg: #2a5298;
 }
 
-/* 2. Force Header to White with Orange Border */
+html, body, #container, #content, #main {
+    background-color: #f0f4f8 !important;
+    color: #1a2332 !important;
+    font-family: 'Inter', 'Segoe UI', sans-serif !important;
+}
 #header {
-    background: #ffffff !important;
-    color: #2d3436 !important;
-    border-bottom: 5px solid #e67e22 !important;
-}
-
-/* 3. Force Logo to Orange */
-#branding h1, #branding h1 a, #branding h1 span {
-    color: #e67e22 !important;
-}
-
-/* 4. Force Blue Sidebar/Bars to Charcoal */
-#nav-sidebar, .module h2, .module caption, .inline-group h2 {
-    background: #2d3436 !important;
-    color: #ffffff !important;
-}
-
-/* 5. Force Buttons to Orange */
-.button, input[type=submit], .submit-row input {
-    background: #e67e22 !important;
+    background: #1e3a5f !important;
     color: #fff !important;
-    border-radius: 8px !important;
-    border: none !important;
+    border-bottom: 4px solid #00c6a2 !important;
 }
+#branding h1, #branding h1 a { color: #00c6a2 !important; font-weight: 800 !important; }
+#user-tools, #user-tools a { color: rgba(255,255,255,0.85) !important; }
+#user-tools a:hover { color: #00c6a2 !important; }
 
-/* 6. Fix for Table Rows */
-tr.row1 { background: #ffffff !important; }
-tr.row2 { background: #fdfbf7 !important; }
+div.breadcrumbs { background: #2a5298 !important; color: #fff !important; }
+div.breadcrumbs a { color: #a5d8f3 !important; }
+
+#nav-sidebar { background: #1e3a5f !important; }
+#nav-sidebar a, #nav-sidebar a:link, #nav-sidebar a:visited { color: rgba(255,255,255,0.70) !important; }
+#nav-sidebar a:hover { color: #fff !important; background: rgba(255,255,255,0.08) !important; }
+
+.module { background: #fff !important; border: 1.5px solid #e2e8f0 !important; border-radius: 12px !important; overflow: hidden !important; box-shadow: 0 4px 16px rgba(30,58,95,0.07) !important; }
+.module h2, .module caption, .inline-group h2 { background: #1e3a5f !important; color: #fff !important; padding: 12px 18px !important; }
+
+tr.row1 { background: #fff !important; }
+tr.row2 { background: #f8fafc !important; }
+tr:hover td { background: #eef7f5 !important; }
+
+a:link, a:visited { color: #1e3a5f !important; }
+a:hover { color: #00c6a2 !important; }
+
+.button, input[type=submit], .submit-row input {
+    background: #1e3a5f !important; color: #fff !important;
+    border: none !important; border-radius: 8px !important;
+    padding: 9px 20px !important; font-weight: 600 !important;
+}
+.button:hover, input[type=submit]:hover { background: #2a5298 !important; }
+input[name=_save] { background: #00c6a2 !important; color: #1e3a5f !important; font-weight: 700 !important; }
+
+.messagelist .success { background: #d1faf4 !important; color: #00644f !important; border-left: 4px solid #00c6a2 !important; }
+.messagelist .warning { background: #fef3c7 !important; color: #92400e !important; border-left: 4px solid #f59e0b !important; }
+.messagelist .error   { background: #fee2e2 !important; color: #991b1b !important; border-left: 4px solid #ef4444 !important; }

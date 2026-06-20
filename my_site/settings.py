@@ -46,7 +46,8 @@ ROOT_URLCONF = 'my_site.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'], 
+        # This line tells Django to look for a global 'templates' directory at your project root
+        'DIRS': [os.path.join(BASE_DIR, 'templates')], 
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -80,7 +81,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # 6. Redirects & Defaults
 LOGIN_URL = 'login'
 # Using 'index' ensures your views.py logic sorts users correctly
-LOGIN_REDIRECT_URL = 'index' 
+LOGIN_REDIRECT_URL = 'portal_choice'
 # settings.py
 LOGOUT_REDIRECT_URL = 'index'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
