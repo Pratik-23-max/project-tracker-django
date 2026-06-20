@@ -75,8 +75,33 @@ def dashboard(request):
             1
         )
 
+    project_progress = []
+
+    for project in projects:
+
+        project_total_tasks = project.tasks.count()
+
+        project_completed_tasks = project.tasks.filter(
+            status='Completed'
+        ).count()
+
+        progress = 0
+
+        if project_total_tasks > 0:
+            progress = int(
+                (project_completed_tasks / project_total_tasks) * 100
+            )
+
+        project_progress.append({
+            'project': project,
+            'total_tasks': project_total_tasks,
+            'completed_tasks': project_completed_tasks,
+            'progress': progress
+        })
+
     context = {
         'projects': projects,
+        'project_progress': project_progress,
         'total_projects': total_projects,
         'total_tasks': total_tasks,
         'completed_tasks': completed_tasks,
@@ -85,7 +110,6 @@ def dashboard(request):
     }
 
     return render(request, 'tracker/dashboard.html', context)
-
 # 5. Employee Dashboard
 @login_required
 def employee_dashboard(request):

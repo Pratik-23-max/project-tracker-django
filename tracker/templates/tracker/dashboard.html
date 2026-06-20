@@ -203,7 +203,7 @@
 
 <div class="row">
 
-    {% for project in projects %}
+    {% for item in project_progress %}
 
     <div class="col-md-6 mb-4">
 
@@ -214,10 +214,10 @@
                 <div class="d-flex justify-content-between">
 
                     <h5 style="color:#e67e22;">
-                        {{ project.title }}
+                        {{ item.project.title }}
                     </h5>
 
-                    <a href="{% url 'project_detail' project.id %}"
+                    <a href="{% url 'project_detail' item.project.id %}"
                        class="btn btn-sm btn-view">
                         Details
                     </a>
@@ -225,7 +225,33 @@
                 </div>
 
                 <p class="text-secondary">
-                    {{ project.description }}
+                    {{ item.project.description }}
+                    <div class="mt-3">
+
+    <small>
+        Progress
+    </small>
+
+    <div class="progress mt-1" style="height:12px;">
+
+        <div class="progress-bar bg-success"
+             role="progressbar"
+             style="width: {{ item.progress }}%;">
+
+        </div>
+
+    </div>
+
+    <small class="text-secondary">
+
+        {{ item.completed_tasks }}/{{ item.total_tasks }}
+        Tasks Completed
+
+        ({{ item.progress }}%)
+
+    </small>
+
+</div>
                 </p>
 
                 <hr>
@@ -234,7 +260,7 @@
                     Recent Tasks
                 </strong>
 
-                {% for task in project.tasks.all|slice:":3" %}
+                {% for task in item.project.tasks.all|slice:":3" %}
 
                 <div class="mt-2">
 
