@@ -11,16 +11,53 @@ class Project(models.Model):
         return self.title
 
 class Task(models.Model):
+
     STATUS_CHOICES = [
         ('Pending', 'Pending'),
         ('In Progress', 'In Progress'),
         ('Completed', 'Completed'),
     ]
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='tasks')
+
+    PRIORITY_CHOICES = [
+        ('Low', 'Low'),
+        ('Medium', 'Medium'),
+        ('High', 'High'),
+    ]
+
+    project = models.ForeignKey(
+        Project,
+        on_delete=models.CASCADE,
+        related_name='tasks'
+    )
+
     title = models.CharField(max_length=200)
-    description = models.TextField() # This ensures your IntegrityError fix works
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
-    assigned_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='tasks')
+
+    description = models.TextField()
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='Pending'
+    )
+
+    priority = models.CharField(
+        max_length=10,
+        choices=PRIORITY_CHOICES,
+        default='Medium'
+    )
+
+    deadline = models.DateField(
+        null=True,
+        blank=True
+    )
+
+    assigned_to = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='tasks'
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

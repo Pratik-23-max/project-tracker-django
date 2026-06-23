@@ -121,19 +121,30 @@ def employee_dashboard(request):
 @login_required
 def project_detail(request, project_id):
     project = get_object_or_404(Project, id=project_id)
+
     if request.method == 'POST':
+
         title = request.POST.get('title')
         description = request.POST.get('description')
+        priority = request.POST.get('priority')
+        deadline = request.POST.get('deadline')
+
         Task.objects.create(
             project=project,
             title=title,
             description=description,
-            assigned_to=request.user # Auto-assigns logged-in user
+            priority=priority,
+            deadline=deadline if deadline else None,
+            assigned_to=request.user
         )
+
         return redirect('project_detail', project_id=project.id)
-    return render(request, 'tracker/project_detail.html', {'project': project})
 
-
+    return render(
+        request,
+        'tracker/project_detail.html',
+        {'project': project}
+    )
 # 7. Update Task Status
 @login_required
 def update_task_status(request, task_id):

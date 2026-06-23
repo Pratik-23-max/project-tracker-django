@@ -1,12 +1,162 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodeSoft Agile Tracker</title>
+    <title>CodeSoft Manager Dashboard</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        :root{
+            --primary:#111827;
+            --accent:#6366f1;
+            --bg:#020617;
+            --card:#111111;
+            --text:#ffffff;
+            --border:#333333;
+        }
+
+        body{
+            font-family:Arial,sans-serif;
+            background:var(--bg);
+            color:var(--text);
+        }
+
+        .topbar{
+            background:var(--primary);
+            padding:20px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            border-bottom:3px solid var(--accent);
+        }
+
+        .topbar h1{
+            font-size:24px;
+        }
+
+        .logout-btn{
+            background:var(--accent);
+            color:white;
+            text-decoration:none;
+            padding:12px 20px;
+            border-radius:6px;
+            font-weight:bold;
+        }
+
+        .layout{
+            display:flex;
+            min-height:calc(100vh - 80px);
+        }
+
+        .sidebar{
+            width:280px;
+            background:#050505;
+            border-right:1px solid var(--border);
+            padding:30px 15px;
+        }
+
+        .sidebar a{
+            display:block;
+            color:white;
+            text-decoration:none;
+            padding:14px;
+            margin-bottom:10px;
+            border-radius:8px;
+        }
+
+        .sidebar a:hover{
+            background:#1a1a1a;
+            color:var(--accent);
+        }
+
+        .content{
+            flex:1;
+            padding:30px;
+        }
+
+        .card{
+            background:var(--card);
+            border:1px solid var(--border);
+            border-left:4px solid var(--accent);
+            border-radius:12px;
+            padding:20px;
+        }
+
+        input,
+        textarea,
+        select{
+            width:100%;
+            padding:12px;
+            margin-top:5px;
+            margin-bottom:15px;
+            border-radius:8px;
+            border:1px solid var(--border);
+        }
+
+        button{
+            background:var(--accent);
+            color:white;
+            border:none;
+            padding:12px 20px;
+            border-radius:8px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            opacity:.9;
+        }
+
+        .status-badge{
+            background:#f7941d;
+            color:white;
+            padding:6px 12px;
+            border-radius:20px;
+            font-size:12px;
+        }
+    </style>
 </head>
-<body style="margin:0; padding:0;">
-    {% block content %}
-    {% endblock %}
+
+<body>
+
+    <div class="topbar">
+        <h1>CodeSoft Manager Portal</h1>
+
+        <a href="{% url 'logout' %}" class="logout-btn">
+            Logout
+        </a>
+    </div>
+
+    <div class="layout">
+
+        <div class="sidebar">
+            <a href="{% url 'dashboard' %}">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+
+            <a href="#">
+                <i class="fas fa-list-check"></i> My Tasks
+            </a>
+
+            <a href="{% url 'index' %}">
+                <i class="fas fa-home"></i> Home
+            </a>
+        </div>
+
+        <div class="content">
+            {% block content %}
+            {% endblock %}
+        </div>
+
+    </div>
+
 </body>
 </html>
