@@ -15,10 +15,27 @@ urlpatterns = [
     path('project/<int:project_id>/', views.project_detail, name='project_detail'),
     path('task/<int:task_id>/update/', views.update_task_status, name='update_task_status'),
     
+    #create project route
+    path('create-project/', views.create_project, name='create_project'),
+    
+    #delete project route
+    path(
+    'project/<int:project_id>/delete/',
+    views.delete_project,
+    name='delete_project'
+),
+    #edit project route
+    path(
+    'project/<int:project_id>/edit/',
+    views.edit_project,
+    name='edit_project'
+),
+    
     # Authentication Routes
     path('login/', auth_views.LoginView.as_view(template_name='tracker/login.html'), name='login'),
     # Note: Modern Django requires a POST request to logout for security
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     # urls.py
   path('portal-choice/', views.portal_choice, name='portal_choice'),
+  
 ]

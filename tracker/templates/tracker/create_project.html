@@ -1,0 +1,39 @@
+{% extends "tracker/base.html" %}
+
+{% block content %}
+
+<div class="card" style="max-width:700px;">
+
+    <h2 style="margin-bottom:20px;">
+        Create New Project
+    </h2>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <label>Project Title</label>
+
+        <input
+            type="text"
+            name="title"
+            required
+        >
+
+        <label>Description</label>
+
+        <textarea
+            name="description"
+            rows="5"
+            required
+        ></textarea>
+
+        <button type="submit">
+            Create Project
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

@@ -153,3 +153,58 @@ def update_task_status(request, task_id):
         task.status = request.POST.get('status')
         task.save()
     return redirect('employee_dashboard')
+#create project view
+@login_required
+def create_project(request):
+
+    if request.method == 'POST':
+
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+
+        Project.objects.create(
+            title=title,
+            description=description,
+            manager=request.user
+        )
+
+        return redirect('dashboard')
+
+    return render(request, 'tracker/create_project.html')
+#delete project view
+@login_required
+def delete_project(request, project_id):
+
+    project = get_object_or_404(
+        Project,
+        id=project_id,
+        manager=request.user
+    )
+
+    project.delete()
+
+    return redirect('dashboard')
+#edit project view
+@login_required
+def edit_project(request, project_id):
+
+    project = get_object_or_404(
+        Project,
+        id=project_id,
+        manager=request.user
+    )
+
+    if request.method == 'POST':
+
+        project.title = request.POST.get('title')
+        project.description = request.POST.get('description')
+
+        project.save()
+
+        return redirect('dashboard')
+
+    return render(
+        request,
+        'tracker/edit_project.html',
+        {'project': project}
+    )
