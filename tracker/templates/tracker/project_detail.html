@@ -3,6 +3,43 @@
 
 {% block content %}
 <style>
+.task-actions{
+    display:flex;
+    gap:8px;
+    margin-top:10px;
+}
+
+.btn-edit-task{
+    background:#f59e0b;
+    color:white;
+    text-decoration:none;
+    padding:7px 14px;
+    border-radius:8px;
+    font-size:12px;
+    font-weight:600;
+    transition:.2s;
+}
+
+.btn-edit-task:hover{
+    background:#d97706;
+    color:white;
+}
+
+.btn-delete-task{
+    background:#ef4444;
+    color:white;
+    text-decoration:none;
+    padding:7px 14px;
+    border-radius:8px;
+    font-size:12px;
+    font-weight:600;
+    transition:.2s;
+}
+
+.btn-delete-task:hover{
+    background:#dc2626;
+    color:white;
+}    
 .detail-header{
     background:#111827;
     border:1px solid #374151;
@@ -163,7 +200,9 @@
 
         <div class="field-group">
             <label>Deadline</label>
-            <input type="date" name="deadline">
+            <input type="date"
+       name="deadline"
+       min="{{ today }}">
         </div>
 
         <button type="submit" class="btn-create">
@@ -211,21 +250,44 @@
 
         </div>
 
-        {% if task.priority == 'High' %}
-            <span class="status-badge" style="background:#fee2e2;color:#dc2626;">
-                {{ task.status }}
-            </span>
+        <div style="display:flex;flex-direction:column;gap:10px;align-items:end;">
 
-        {% elif task.priority == 'Medium' %}
-            <span class="status-badge" style="background:#fef3c7;color:#d97706;">
-                {{ task.status }}
-            </span>
+    {% if task.priority == 'High' %}
+        <span class="status-badge" style="background:#fee2e2;color:#dc2626;">
+            {{ task.status }}
+        </span>
 
-        {% else %}
-            <span class="status-badge" style="background:#dcfce7;color:#16a34a;">
-                {{ task.status }}
-            </span>
-        {% endif %}
+    {% elif task.priority == 'Medium' %}
+        <span class="status-badge" style="background:#fef3c7;color:#d97706;">
+            {{ task.status }}
+        </span>
+
+    {% else %}
+        <span class="status-badge" style="background:#dcfce7;color:#16a34a;">
+            {{ task.status }}
+        </span>
+    {% endif %}
+
+    <div>
+
+        <div class="task-actions">
+
+    <a href="{% url 'edit_task' task.id %}"
+       class="btn-edit-task">
+        <i class="fas fa-pen"></i> Edit
+    </a>
+
+    <a href="{% url 'delete_task' task.id %}"
+       class="btn-delete-task"
+       onclick="return confirm('Delete this task?');">
+        <i class="fas fa-trash"></i> Delete
+    </a>
+
+</div>
+
+    </div>
+
+</div>
 
     </div>
 

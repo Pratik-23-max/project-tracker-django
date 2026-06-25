@@ -3,6 +3,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from .models import Project, Task
+from datetime import date
 
 # 1. Landing Page
 def index(request):
@@ -141,10 +142,13 @@ def project_detail(request, project_id):
         return redirect('project_detail', project_id=project.id)
 
     return render(
-        request,
-        'tracker/project_detail.html',
-        {'project': project}
-    )
+    request,
+    'tracker/project_detail.html',
+    {
+        'project': project,
+        'today': date.today().isoformat()
+    }
+)
 # 7. Update Task Status
 @login_required
 def update_task_status(request, task_id):
@@ -208,3 +212,43 @@ def edit_project(request, project_id):
         'tracker/edit_project.html',
         {'project': project}
     )
+#edit task view
+@login_required
+def edit_task(request, task_id):
+
+    task = get_object_or_404(Task, id=task_id)
+
+    if request.method == 'POST':
+
+        task.title = request.POST.get('title')
+        task.description = request.POST.get('description')
+        task.priority = request.POST.get('priority')
+        task.status = request.POST.get('status')
+        task.deadline = request.POST.get('deadline') or None
+
+        task.save()
+
+        return redirect(
+            'project_detail',
+            project_id=task.project.id
+        )
+
+    return render(
+        request,
+        'tracker/edit_task.html',
+        {'task': task}
+    )
+#delete task view
+@login_required
+def delete_task(request, task_id):
+
+    task = get_object_or_404(Task, id=task_id)
+
+    project_id = task.project.id
+
+    task.delete()
+
+    return redirect(
+        'project_detail',
+        project_id=project_id
+    )    

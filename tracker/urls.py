@@ -14,6 +14,19 @@ urlpatterns = [
     # Detail and Action Routes
     path('project/<int:project_id>/', views.project_detail, name='project_detail'),
     path('task/<int:task_id>/update/', views.update_task_status, name='update_task_status'),
+    # edit task route
+path(
+    'task/<int:task_id>/edit/',
+    views.edit_task,
+    name='edit_task'
+),
+
+# delete task route
+path(
+    'task/<int:task_id>/delete/',
+    views.delete_task,
+    name='delete_task'
+),
     
     #create project route
     path('create-project/', views.create_project, name='create_project'),
