@@ -127,29 +127,11 @@
 
 <body>
 
-    <div class="topbar">
-        <h1>CodeSoft Manager Portal</h1>
-
-        <a href="{% url 'logout' %}" class="logout-btn">
-            Logout
-        </a>
-    </div>
+    
 
     <div class="layout">
 
-        <div class="sidebar">
-            <a href="{% url 'dashboard' %}">
-                <i class="fas fa-chart-line"></i> Dashboard
-            </a>
-
-            <a href="#">
-                <i class="fas fa-list-check"></i> My Tasks
-            </a>
-
-            <a href="{% url 'index' %}">
-                <i class="fas fa-home"></i> Home
-            </a>
-        </div>
+        
 
         <div class="content">
             {% block content %}
