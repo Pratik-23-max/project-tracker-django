@@ -7,6 +7,31 @@
     <h2 style="margin-bottom:20px;">
         Create New Project
     </h2>
+    {% if errors %}
+
+<div style="
+background:#7f1d1d;
+color:white;
+padding:15px;
+border-radius:10px;
+margin-bottom:20px;
+">
+
+    {% for field, messages in errors.items %}
+
+        {% for message in messages %}
+
+            <p style="margin:0 0 8px 0;">
+                {{ message }}
+            </p>
+
+        {% endfor %}
+
+    {% endfor %}
+
+</div>
+
+{% endif %}
 
     <form method="POST">
 
@@ -17,6 +42,7 @@
         <input
             type="text"
             name="title"
+            value="{{ title }}"
             required
         >
 
@@ -26,7 +52,7 @@
             name="description"
             rows="5"
             required
-        ></textarea>
+        >{{ description }}</textarea>
 
         <button type="submit">
             Create Project

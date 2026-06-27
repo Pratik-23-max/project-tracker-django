@@ -175,34 +175,82 @@
         <i class="fas fa-plus-circle"></i>
         Add New Task
     </h4>
+{% if errors %}
 
+<div style="
+background:#7f1d1d;
+color:white;
+padding:15px;
+border-radius:10px;
+margin-bottom:20px;
+">
+
+{% for field, messages in errors.items %}
+
+    {% for message in messages %}
+
+        <p>{{ message }}</p>
+
+    {% endfor %}
+
+{% endfor %}
+
+</div>
+
+{% endif %}
     <form method="POST">
         {% csrf_token %}
 
         <div class="field-group">
             <label>Task Title</label>
-            <input type="text" name="title" placeholder="e.g. Design wireframes" required>
+            <input
+    type="text"
+    name="title"
+    value="{{ title }}"
+    placeholder="e.g. Design wireframes"
+    required
+>
         </div>
 
         <div class="field-group">
             <label>Description</label>
-            <textarea name="description" placeholder="Describe the task…" required></textarea>
+            <textarea
+    name="description"
+    placeholder="Describe the task…"
+    required
+>{{ description }}</textarea>
         </div>
 
         <div class="field-group">
             <label>Priority</label>
             <select name="priority">
-                <option value="Low">Low</option>
-                <option value="Medium" selected>Medium</option>
-                <option value="High">High</option>
-            </select>
+
+    <option value="Low"
+        {% if priority == "Low" %}selected{% endif %}>
+        Low
+    </option>
+
+    <option value="Medium"
+        {% if priority == "Medium" %}selected{% endif %}>
+        Medium
+    </option>
+
+    <option value="High"
+        {% if priority == "High" %}selected{% endif %}>
+        High
+    </option>
+
+</select>
         </div>
 
         <div class="field-group">
             <label>Deadline</label>
-            <input type="date"
-       name="deadline"
-       min="{{ today }}">
+            <input
+    type="date"
+    name="deadline"
+    min="{{ today }}"
+    value="{{ deadline }}"
+>
         </div>
 
         <button type="submit" class="btn-create">

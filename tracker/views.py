@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from .models import Project, Task
 from datetime import date
+from django.core.exceptions import ValidationError
 
 # 1. Landing Page
 def index(request):
@@ -121,6 +122,7 @@ def employee_dashboard(request):
 # 6. Project Details & Add Task
 @login_required
 def project_detail(request, project_id):
+
     project = get_object_or_404(Project, id=project_id)
 
     if request.method == 'POST':
@@ -130,7 +132,7 @@ def project_detail(request, project_id):
         priority = request.POST.get('priority')
         deadline = request.POST.get('deadline')
 
-        Task.objects.create(
+        task = Task(
             project=project,
             title=title,
             description=description,
@@ -139,16 +141,41 @@ def project_detail(request, project_id):
             assigned_to=request.user
         )
 
-        return redirect('project_detail', project_id=project.id)
+        try:
+
+            task.full_clean()
+
+            task.save()
+
+            return redirect(
+                'project_detail',
+                project_id=project.id
+            )
+
+        except ValidationError as e:
+
+            return render(
+                request,
+                'tracker/project_detail.html',
+                {
+                    'project': project,
+                    'today': date.today().isoformat(),
+                    'errors': e.message_dict,
+                    'title': title,
+                    'description': description,
+                    'priority': priority,
+                    'deadline': deadline,
+                }
+            )
 
     return render(
-    request,
-    'tracker/project_detail.html',
-    {
-        'project': project,
-        'today': date.today().isoformat()
-    }
-)
+        request,
+        'tracker/project_detail.html',
+        {
+            'project': project,
+            'today': date.today().isoformat()
+        }
+    )
 # 7. Update Task Status
 @login_required
 def update_task_status(request, task_id):
@@ -166,15 +193,36 @@ def create_project(request):
         title = request.POST.get('title')
         description = request.POST.get('description')
 
-        Project.objects.create(
-            title=title,
-            description=description,
-            manager=request.user
-        )
+        try:
 
-        return redirect('dashboard')
+            project = Project(
+                title=title,
+                description=description,
+                manager=request.user
+            )
 
-    return render(request, 'tracker/create_project.html')
+            project.full_clean()
+
+            project.save()
+
+            return redirect('dashboard')
+
+        except ValidationError as e:
+
+            return render(
+                request,
+                'tracker/create_project.html',
+                {
+                    'errors': e.message_dict,
+                    'title': title,
+                    'description': description,
+                }
+            )
+
+    return render(
+        request,
+        'tracker/create_project.html'
+    )
 #delete project view
 @login_required
 def delete_project(request, project_id):
@@ -203,14 +251,31 @@ def edit_project(request, project_id):
         project.title = request.POST.get('title')
         project.description = request.POST.get('description')
 
-        project.save()
+        try:
 
-        return redirect('dashboard')
+            project.full_clean()
+
+            project.save()
+
+            return redirect('dashboard')
+
+        except ValidationError as e:
+
+            return render(
+                request,
+                'tracker/edit_project.html',
+                {
+                    'project': project,
+                    'errors': e.message_dict,
+                }
+            )
 
     return render(
         request,
         'tracker/edit_project.html',
-        {'project': project}
+        {
+            'project': project
+        }
     )
 #edit task view
 @login_required
@@ -226,18 +291,36 @@ def edit_task(request, task_id):
         task.status = request.POST.get('status')
         task.deadline = request.POST.get('deadline') or None
 
-        task.save()
+        try:
 
-        return redirect(
-            'project_detail',
-            project_id=task.project.id
-        )
+            task.full_clean()
+
+            task.save()
+
+            return redirect(
+                'project_detail',
+                project_id=task.project.id
+            )
+
+        except ValidationError as e:
+
+            return render(
+                request,
+                'tracker/edit_task.html',
+                {
+                    'task': task,
+                    'errors': e.message_dict,
+                }
+            )
 
     return render(
         request,
         'tracker/edit_task.html',
-        {'task': task}
+        {
+            'task': task
+        }
     )
+    
 #delete task view
 @login_required
 def delete_task(request, task_id):

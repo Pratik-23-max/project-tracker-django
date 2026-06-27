@@ -1,14 +1,38 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from datetime import date
+
 
 class Project(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
-    manager = models.ForeignKey(User, on_delete=models.CASCADE, related_name='managed_projects')
+    manager = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='managed_projects'
+    )
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def clean(self):
+        if not self.title.strip():
+            raise ValidationError({
+                'title': 'Project title cannot be empty.'
+            })
+
+        if len(self.title.strip()) < 3:
+            raise ValidationError({
+                'title': 'Project title must contain at least 3 characters.'
+            })
+
+        if not self.description.strip():
+            raise ValidationError({
+                'description': 'Project description cannot be empty.'
+            })
 
     def __str__(self):
         return self.title
+
 
 class Task(models.Model):
 
@@ -31,7 +55,6 @@ class Task(models.Model):
     )
 
     title = models.CharField(max_length=200)
-
     description = models.TextField()
 
     status = models.CharField(
@@ -59,6 +82,27 @@ class Task(models.Model):
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def clean(self):
+        if not self.title.strip():
+            raise ValidationError({
+                'title': 'Task title cannot be empty.'
+            })
+
+        if len(self.title.strip()) < 3:
+            raise ValidationError({
+                'title': 'Task title must contain at least 3 characters.'
+            })
+
+        if not self.description.strip():
+            raise ValidationError({
+                'description': 'Task description cannot be empty.'
+            })
+
+        if self.deadline and self.deadline < date.today():
+            raise ValidationError({
+                'deadline': 'Deadline cannot be in the past.'
+            })
 
     def __str__(self):
         return self.title

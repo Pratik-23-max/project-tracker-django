@@ -7,7 +7,29 @@
     <h2 style="margin-bottom:20px;">
         Edit Task
     </h2>
+{% if errors %}
 
+<div style="
+background:#7f1d1d;
+color:white;
+padding:15px;
+border-radius:10px;
+margin-bottom:20px;
+">
+
+    {% for field, messages in errors.items %}
+
+        {% for message in messages %}
+
+            <p>{{ message }}</p>
+
+        {% endfor %}
+
+    {% endfor %}
+
+</div>
+
+{% endif %}
     <form method="POST">
 
         {% csrf_token %}
