@@ -100,6 +100,26 @@ margin-bottom:20px;
             name="deadline"
             value="{{ task.deadline|date:'Y-m-d' }}"
         >
+        <label>Assign To</label>
+
+<select name="assigned_to" required>
+
+    {% for employee in employees %}
+
+        <option
+            value="{{ employee.id }}"
+            {% if task.assigned_to == employee %}
+                selected
+            {% endif %}
+        >
+
+            {{ employee.username }}
+
+        </option>
+
+    {% endfor %}
+
+</select>
 
         <button type="submit">
             Save Changes

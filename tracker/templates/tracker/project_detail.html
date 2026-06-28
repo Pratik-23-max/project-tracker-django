@@ -244,14 +244,22 @@ margin-bottom:20px;
         </div>
 
         <div class="field-group">
-            <label>Deadline</label>
-            <input
-    type="date"
-    name="deadline"
-    min="{{ today }}"
-    value="{{ deadline }}"
->
-        </div>
+    <label>Assign To</label>
+
+    <select name="assigned_to" required>
+
+        <option value="">Select Employee</option>
+
+        {% for employee in employees %}
+
+            <option value="{{ employee.id }}">
+                {{ employee.username }}
+            </option>
+
+        {% endfor %}
+
+    </select>
+</div>
 
         <button type="submit" class="btn-create">
             <i class="fas fa-plus"></i>

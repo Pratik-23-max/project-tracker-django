@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User   # <-- ADD THIS
 from .models import Project, Task
 from datetime import date
 from django.core.exceptions import ValidationError
@@ -115,15 +116,83 @@ def dashboard(request):
 # 5. Employee Dashboard
 @login_required
 def employee_dashboard(request):
-    tasks = Task.objects.filter(assigned_to=request.user)
-    return render(request, 'tracker/employee_dashboard.html', {'tasks': tasks})
 
+    tasks = Task.objects.filter(
+        assigned_to=request.user
+    )
+
+    today = date.today()
+
+    pending_tasks = tasks.filter(
+        status='Pending'
+    )
+
+    in_progress_tasks = tasks.filter(
+        status='In Progress'
+    )
+
+    completed_tasks = tasks.filter(
+        status='Completed'
+    )
+
+    overdue_tasks = tasks.filter(
+        deadline__lt=today
+    ).exclude(
+        status='Completed'
+    )
+
+    due_today_tasks = tasks.filter(
+        deadline=today
+    ).exclude(
+        status='Completed'
+    )
+
+    recently_completed = completed_tasks.order_by(
+        '-created_at'
+    )[:5]
+
+    context = {
+
+        'tasks': tasks,
+
+        'pending_count': pending_tasks.count(),
+
+        'in_progress_count': in_progress_tasks.count(),
+
+        'completed_count': completed_tasks.count(),
+
+        'overdue_count': overdue_tasks.count(),
+
+        'today_count': due_today_tasks.count(),
+
+        'due_today_tasks': due_today_tasks,
+
+        'overdue_tasks': overdue_tasks,
+
+        'recently_completed': recently_completed,
+    }
+
+    return render(
+        request,
+        'tracker/employee_dashboard.html',
+        context
+    )
 
 # 6. Project Details & Add Task
 @login_required
 def project_detail(request, project_id):
 
-    project = get_object_or_404(Project, id=project_id)
+    project = get_object_or_404(
+        Project,
+        id=project_id,
+        manager=request.user
+    )
+
+    employees = User.objects.exclude(
+        id=request.user.id
+    ).exclude(
+        is_superuser=True
+    )
 
     if request.method == 'POST':
 
@@ -132,16 +201,21 @@ def project_detail(request, project_id):
         priority = request.POST.get('priority')
         deadline = request.POST.get('deadline')
 
-        task = Task(
-            project=project,
-            title=title,
-            description=description,
-            priority=priority,
-            deadline=deadline if deadline else None,
-            assigned_to=request.user
+        assigned_to = get_object_or_404(
+            User,
+            id=request.POST.get('assigned_to')
         )
 
         try:
+
+            task = Task(
+                project=project,
+                title=title,
+                description=description,
+                priority=priority,
+                deadline=deadline if deadline else None,
+                assigned_to=assigned_to
+            )
 
             task.full_clean()
 
@@ -159,6 +233,7 @@ def project_detail(request, project_id):
                 'tracker/project_detail.html',
                 {
                     'project': project,
+                    'employees': employees,
                     'today': date.today().isoformat(),
                     'errors': e.message_dict,
                     'title': title,
@@ -173,6 +248,7 @@ def project_detail(request, project_id):
         'tracker/project_detail.html',
         {
             'project': project,
+            'employees': employees,
             'today': date.today().isoformat()
         }
     )
@@ -184,7 +260,7 @@ def update_task_status(request, task_id):
         task.status = request.POST.get('status')
         task.save()
     return redirect('employee_dashboard')
-#create project view
+#8.create project view
 @login_required
 def create_project(request):
 
@@ -281,7 +357,17 @@ def edit_project(request, project_id):
 @login_required
 def edit_task(request, task_id):
 
-    task = get_object_or_404(Task, id=task_id)
+    task = get_object_or_404(
+        Task,
+        id=task_id,
+        project__manager=request.user
+)
+
+    employees = User.objects.exclude(
+        id=request.user.id
+    ).exclude(
+        is_superuser=True
+    )
 
     if request.method == 'POST':
 
@@ -290,6 +376,11 @@ def edit_task(request, task_id):
         task.priority = request.POST.get('priority')
         task.status = request.POST.get('status')
         task.deadline = request.POST.get('deadline') or None
+
+        task.assigned_to = get_object_or_404(
+            User,
+            id=request.POST.get('assigned_to')
+        )
 
         try:
 
@@ -309,7 +400,8 @@ def edit_task(request, task_id):
                 'tracker/edit_task.html',
                 {
                     'task': task,
-                    'errors': e.message_dict,
+                    'employees': employees,
+                    'errors': e.message_dict
                 }
             )
 
@@ -317,7 +409,8 @@ def edit_task(request, task_id):
         request,
         'tracker/edit_task.html',
         {
-            'task': task
+            'task': task,
+            'employees': employees
         }
     )
     
@@ -325,7 +418,11 @@ def edit_task(request, task_id):
 @login_required
 def delete_task(request, task_id):
 
-    task = get_object_or_404(Task, id=task_id)
+    task = get_object_or_404(
+        Task,
+        id=task_id,
+        project__manager=request.user
+    )
 
     project_id = task.project.id
 
@@ -334,4 +431,4 @@ def delete_task(request, task_id):
     return redirect(
         'project_detail',
         project_id=project_id
-    )    
+    )
