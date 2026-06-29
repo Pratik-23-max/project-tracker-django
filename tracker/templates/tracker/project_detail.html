@@ -241,6 +241,7 @@ margin-bottom:20px;
     </option>
 
 </select>
+
         </div>
 
         <div class="field-group">
@@ -259,6 +260,16 @@ margin-bottom:20px;
         {% endfor %}
 
     </select>
+    <label style="margin-top:15px;">
+    Due Date
+</label>
+
+<input
+    type="date"
+    name="deadline"
+    min="{{ today }}"
+    value="{{ deadline|default:'' }}"
+>
 </div>
 
         <button type="submit" class="btn-create">

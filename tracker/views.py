@@ -52,27 +52,48 @@ def portal_choice(request):
 # 4. Manager Dashboard (Updated to support flexible querying fallback)
 @login_required
 def dashboard(request):
-    projects = Project.objects.filter(manager=request.user)
 
-    if not projects.exists():
-        projects = Project.objects.all()
+    query = request.GET.get("q", "")
+    status_filter = request.GET.get("status", "")
+
+    projects = Project.objects.filter(
+        manager=request.user
+    )
+
+    if query:
+
+        projects = projects.filter(
+            title__icontains=query
+        ) | projects.filter(
+            description__icontains=query
+        )
 
     total_projects = projects.count()
+    total_employees = User.objects.exclude(
+    is_superuser=True
+).exclude(
+    id=request.user.id
+).count()
 
-    total_tasks = Task.objects.filter(project__in=projects).count()
+    total_tasks = Task.objects.filter(
+        project__in=projects
+    ).count()
 
     completed_tasks = Task.objects.filter(
         project__in=projects,
-        status='Completed'
+        status="Completed"
     ).count()
 
     pending_tasks = Task.objects.filter(
         project__in=projects
-    ).exclude(status='Completed').count()
+    ).exclude(
+        status="Completed"
+    ).count()
 
     completion_percentage = 0
 
     if total_tasks > 0:
+
         completion_percentage = round(
             (completed_tasks / total_tasks) * 100,
             1
@@ -82,37 +103,72 @@ def dashboard(request):
 
     for project in projects:
 
-        project_total_tasks = project.tasks.count()
+        total = project.tasks.count()
 
-        project_completed_tasks = project.tasks.filter(
-            status='Completed'
+        completed = project.tasks.filter(
+            status="Completed"
         ).count()
 
         progress = 0
 
-        if project_total_tasks > 0:
+        if total > 0:
+
             progress = int(
-                (project_completed_tasks / project_total_tasks) * 100
+                (completed / total) * 100
+            )
+
+        # Recent tasks for this project
+        recent_tasks = project.tasks.all()
+
+        if status_filter:
+
+            recent_tasks = recent_tasks.filter(
+                status=status_filter
             )
 
         project_progress.append({
-            'project': project,
-            'total_tasks': project_total_tasks,
-            'completed_tasks': project_completed_tasks,
-            'progress': progress
+
+            "project": project,
+
+            "total_tasks": total,
+
+            "completed_tasks": completed,
+
+            "progress": progress,
+
+            "recent_tasks": recent_tasks,
+
         })
 
-    context = {
-        'projects': projects,
-        'project_progress': project_progress,
-        'total_projects': total_projects,
-        'total_tasks': total_tasks,
-        'completed_tasks': completed_tasks,
-        'pending_tasks': pending_tasks,
-        'completion_percentage': completion_percentage,
-    }
+    return render(
 
-    return render(request, 'tracker/dashboard.html', context)
+        request,
+
+        "tracker/dashboard.html",
+
+        {
+
+            "project_progress": project_progress,
+
+            "total_projects": total_projects,
+
+            "total_tasks": total_tasks,
+
+            "completed_tasks": completed_tasks,
+
+            "pending_tasks": pending_tasks,
+
+            "completion_percentage": completion_percentage,
+
+            "query": query,
+
+            "status_filter": status_filter,
+            
+            "total_employees": total_employees,
+
+        }
+
+    )
 # 5. Employee Dashboard
 @login_required
 def employee_dashboard(request):
