@@ -322,29 +322,123 @@ All My Tasks
 
 <td>
 
-<span class="badge bg-secondary">
+{% if task.status == "Pending" %}
 
-{{ task.status }}
+<span class="badge bg-warning text-dark">
+
+Pending
 
 </span>
 
+{% elif task.status == "In Progress" %}
+
+<span class="badge bg-primary">
+
+In Progress
+
+</span>
+
+{% else %}
+
+<span class="badge bg-success">
+
+Completed
+
+</span>
+
+{% endif %}
+
 </td>
 
 <td>
 
-{{ task.deadline }}
+{% if task.deadline %}
+
+    {% if task.deadline < today %}
+
+        <span class="text-danger fw-bold">
+
+            {{ task.deadline }}
+
+        </span>
+
+    {% elif task.deadline == today %}
+
+        <span class="text-warning fw-bold">
+
+            {{ task.deadline }}
+
+        </span>
+
+    {% else %}
+
+        {{ task.deadline }}
+
+    {% endif %}
+
+{% else %}
+
+<span class="text-muted">
+
+No Deadline
+
+</span>
+
+{% endif %}
 
 </td>
 
 <td>
 
-<a
-href="{% url 'update_task_status' task.id %}"
-class="btn-update">
+{% if task.status == "Pending" %}
 
-Update
+<form method="POST" action="{% url 'update_task_status' task.id %}">
 
-</a>
+    {% csrf_token %}
+
+    <input
+        type="hidden"
+        name="status"
+        value="In Progress"
+    >
+
+    <button class="btn btn-warning btn-sm rounded-pill px-3">
+
+        ▶ Start
+
+    </button>
+
+</form>
+
+{% elif task.status == "In Progress" %}
+
+<form method="POST" action="{% url 'update_task_status' task.id %}">
+
+    {% csrf_token %}
+
+    <input
+        type="hidden"
+        name="status"
+        value="Completed"
+    >
+
+    <button class="btn btn-success btn-sm rounded-pill px-3">
+
+        ✔ Complete
+
+    </button>
+
+</form>
+
+{% else %}
+
+<button class="btn btn-secondary btn-sm rounded-pill px-3" disabled>
+
+✓ Completed
+
+</button>
+
+{% endif %}
 
 </td>
 

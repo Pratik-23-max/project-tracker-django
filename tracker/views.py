@@ -170,6 +170,7 @@ def employee_dashboard(request):
         'overdue_tasks': overdue_tasks,
 
         'recently_completed': recently_completed,
+        'today': date.today(),
     }
 
     return render(
@@ -255,10 +256,19 @@ def project_detail(request, project_id):
 # 7. Update Task Status
 @login_required
 def update_task_status(request, task_id):
-    task = get_object_or_404(Task, id=task_id, assigned_to=request.user)
+
+    task = get_object_or_404(
+        Task,
+        id=task_id,
+        assigned_to=request.user
+    )
+
     if request.method == 'POST':
-        task.status = request.POST.get('status')
+
+        task.status = request.POST.get("status")
+
         task.save()
+
     return redirect('employee_dashboard')
 #8.create project view
 @login_required
