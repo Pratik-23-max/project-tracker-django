@@ -1,7 +1,15 @@
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
+from rest_framework.routers import DefaultRouter
+from .viewsets import ProjectViewSet
+router = DefaultRouter()
 
+router.register(
+    r'api/projects',
+    ProjectViewSet,
+    basename='projects'
+)
 urlpatterns = [
     # Main Portal Routes
     path('', views.index, name='index'),
@@ -52,3 +60,4 @@ path(
   path('portal-choice/', views.portal_choice, name='portal_choice'),
   
 ]
+urlpatterns += router.urls

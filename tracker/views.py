@@ -6,6 +6,9 @@ from django.contrib.auth.models import User   # <-- ADD THIS
 from .models import Project, Task
 from datetime import date
 from django.core.exceptions import ValidationError
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from .serializers import ProjectSerializer
 
 # 1. Landing Page
 def index(request):
@@ -498,3 +501,14 @@ def delete_task(request, task_id):
         'project_detail',
         project_id=project_id
     )
+@api_view(['GET'])
+def api_projects(request):
+
+    projects = Project.objects.all()
+
+    serializer = ProjectSerializer(
+        projects,
+        many=True
+    )
+
+    return Response(serializer.data)
