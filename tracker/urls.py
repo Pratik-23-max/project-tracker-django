@@ -2,13 +2,18 @@ from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
 from rest_framework.routers import DefaultRouter
-from .viewsets import ProjectViewSet
+from .viewsets import ProjectViewSet, TaskViewSet
 router = DefaultRouter()
 
 router.register(
     r'api/projects',
     ProjectViewSet,
     basename='projects'
+)
+router.register(
+    r'api/tasks',
+    TaskViewSet,
+    basename='tasks'
 )
 urlpatterns = [
     # Main Portal Routes
