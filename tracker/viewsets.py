@@ -3,31 +3,38 @@ from rest_framework.permissions import IsAuthenticated
 
 from .models import Project, Task
 from .serializers import ProjectSerializer, TaskSerializer
+from rest_framework.permissions import AllowAny
+
+
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
 
     serializer_class = ProjectSerializer
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
 
-        return Project.objects.filter(
-            manager=self.request.user
-        )
+        if self.request.user.is_authenticated:
+            return Project.objects.filter(
+                manager=self.request.user
+            )
+
+        return Project.objects.all()
 
     def perform_create(self, serializer):
 
-        serializer.save(
-            manager=self.request.user
-        )
+        if self.request.user.is_authenticated:
+            serializer.save(
+                manager=self.request.user
+            )
         
 class TaskViewSet(viewsets.ModelViewSet):
 
     serializer_class = TaskSerializer
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
 
