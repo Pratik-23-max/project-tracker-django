@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
-
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
 from .models import Project, Task
 from .serializers import ProjectSerializer, TaskSerializer
 
@@ -10,6 +11,11 @@ class ProjectViewSet(viewsets.ModelViewSet):
     serializer_class = ProjectSerializer
 
     permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend,filters.SearchFilter,filters.OrderingFilter,]
+
+    search_fields = ['title', 'description']
+
+    ordering_fields = ['title', 'created_at']
 
     def get_queryset(self):
 
