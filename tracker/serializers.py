@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Project
+from .models import Project, Task
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -15,9 +15,25 @@ class ProjectSerializer(serializers.ModelSerializer):
             "manager",
             "created_at"
         ]
-        
-from .models import Task
 
+    def validate_title(self, value):
+
+        value = value.strip()
+
+        if len(value) < 3:
+            raise serializers.ValidationError(
+                "Project title must contain at least 3 characters."
+            )
+
+        return value
+    def validate(self, attrs):
+
+        if attrs["title"].strip().lower() == attrs["description"].strip().lower():
+            raise serializers.ValidationError(
+             "Title and description cannot be the same."
+         )
+
+        return attrs
 
 class TaskSerializer(serializers.ModelSerializer):
 
@@ -29,4 +45,4 @@ class TaskSerializer(serializers.ModelSerializer):
 
         read_only_fields = [
             "assigned_to",
-        ]        
+        ]
