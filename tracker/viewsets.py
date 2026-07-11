@@ -19,9 +19,11 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
 
-        return Project.objects.filter(
-            manager=self.request.user
-        )
+        return (
+            Project.objects
+            .select_related("manager")
+            .filter(manager=self.request.user)
+        ) 
 
     def perform_create(self, serializer):
 
