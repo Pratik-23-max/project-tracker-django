@@ -106,19 +106,11 @@ body{
 <div class="d-flex justify-content-between align-items-center mb-4">
     
 
-<div>
-
-<h2 class="dashboard-title">
-Welcome,
-<span class="text-primary">
-{{ request.user.username }}
-</span>
-</h2>
+{% include "tracker/includes/profile_header.html" %}
 
 <p class="text-muted mb-0">
-Employee Dashboard
+    Employee Dashboard
 </p>
-
 </div>
 
 <form action="{% url 'logout' %}" method="post">

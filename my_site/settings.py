@@ -110,3 +110,5 @@ LOGIN_REDIRECT_URL = 'portal_choice'
 # settings.py
 LOGOUT_REDIRECT_URL = 'index'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

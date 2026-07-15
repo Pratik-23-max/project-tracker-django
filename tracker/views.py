@@ -3,7 +3,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User   # <-- ADD THIS
-from .models import Project, Task
+from .models import Project, Task, Profile
 from datetime import date
 from django.core.exceptions import ValidationError
 from rest_framework.response import Response
@@ -142,6 +142,9 @@ def dashboard(request):
             "recent_tasks": recent_tasks,
 
         })
+        profile = Profile.objects.filter(
+    user=request.user
+).first()
 
     return render(
 
@@ -168,6 +171,8 @@ def dashboard(request):
             "status_filter": status_filter,
             
             "total_employees": total_employees,
+            
+            "profile": profile,
 
         }
 
@@ -209,7 +214,9 @@ def employee_dashboard(request):
     recently_completed = completed_tasks.order_by(
         '-created_at'
     )[:5]
-
+    
+    profile = Profile.objects.filter(
+    user=request.user).first()
     context = {
 
         'tasks': tasks,
@@ -229,7 +236,10 @@ def employee_dashboard(request):
         'overdue_tasks': overdue_tasks,
 
         'recently_completed': recently_completed,
+        
         'today': date.today(),
+        
+        'profile': profile,
     }
 
     return render(
