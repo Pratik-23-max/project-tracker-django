@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login, authenticate
+from django.http import HttpResponseForbidden
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User   # <-- ADD THIS
@@ -343,6 +344,11 @@ def update_task_status(request, task_id):
 @login_required
 def create_project(request):
 
+    if not request.user.is_superuser:
+        return HttpResponseForbidden(
+            "Only managers can create projects."
+        )
+
     if request.method == 'POST':
 
         title = request.POST.get('title')
@@ -381,6 +387,10 @@ def create_project(request):
 #delete project view
 @login_required
 def delete_project(request, project_id):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden(
+            "Only managers can perform this action."
+    )
 
     project = get_object_or_404(
         Project,
@@ -394,6 +404,11 @@ def delete_project(request, project_id):
 #edit project view
 @login_required
 def edit_project(request, project_id):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden(
+            "Only managers can perform this action."
+    )
+    
 
     project = get_object_or_404(
         Project,
@@ -435,6 +450,10 @@ def edit_project(request, project_id):
 #edit task view
 @login_required
 def edit_task(request, task_id):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden(
+        "Only managers can perform this action."
+    )
 
     task = get_object_or_404(
         Task,
@@ -496,6 +515,10 @@ def edit_task(request, task_id):
 #delete task view
 @login_required
 def delete_task(request, task_id):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden(
+            "Only managers can perform this action."
+    )
 
     task = get_object_or_404(
         Task,
