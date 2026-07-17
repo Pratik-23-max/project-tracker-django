@@ -103,25 +103,27 @@ body{
 
 <div class="container py-5">
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    
+<div class="d-flex justify-content-between align-items-start mb-4">
 
-{% include "tracker/includes/profile_header.html" %}
+    <div>
 
-<p class="text-muted mb-0">
-    Employee Dashboard
-</p>
-</div>
+        {% include "tracker/includes/profile_header.html" %}
 
-<form action="{% url 'logout' %}" method="post">
+        <p class="text-muted mt-2">
+            Employee Dashboard
+        </p>
 
-{% csrf_token %}
+    </div>
 
-<button class="btn btn-outline-dark">
-Logout
-</button>
+    <form action="{% url 'logout' %}" method="post">
 
-</form>
+        {% csrf_token %}
+
+        <button class="btn btn-outline-dark">
+            Logout
+        </button>
+
+    </form>
 
 </div>
 
