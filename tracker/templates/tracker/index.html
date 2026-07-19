@@ -1,81 +1,31 @@
 {% extends 'tracker/base.html' %}
 {% load static %}
 
+{% block title %}FlowBoard{% endblock %}
+
 {% block content %}
-<div class="portal-wrapper" style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle at center, #f4f7f9 0%, #e9eff2 100%); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; margin: 0; padding: 1.5rem; box-sizing: border-box;">
-    
-    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 2.5rem;">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#00b4d8" stroke="#00b4d8" stroke-width="2" stroke-linejoin="round"/>
-            <path d="M2 12L12 17L22 12" stroke="#00b4d8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M2 17L12 22L22 17" stroke="#00b4d8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span style="font-weight: 700; font-size: 1.4rem; color: #1e3a5f; letter-spacing: -0.3px;">Code<span style="color: #00b4d8;">Soft</span></span>
+
+<div class="landing-page">
+
+    <div class="hero">
+
+        <div class="hero-logo">
+            <i class="fa-solid fa-layer-group"></i>
+        </div>
+
+        <h1>FlowBoard</h1>
+
+        <p>
+            A modern Project & Task Management Platform
+            for teams, managers and developers.
+        </p>
+
+        <a href="{% url 'login' %}" class="hero-btn">
+            Login
+        </a>
+
     </div>
 
-    <div style="text-align: center; margin-bottom: 3rem;">
-        <h2 style="color: #1e3a5f; font-size: 2.2rem; font-weight: 700; margin: 0 0 0.75rem 0; letter-spacing: -0.5px;">Welcome to CodeSoft</h2>
-        <p style="color: #64748b; font-size: 1.05rem; margin: 0; font-weight: 400;">Select a workspace to begin your session.</p>
-    </div>
-    
-    <div class="cards-container" style="display: flex; gap: 2rem; justify-content: center; align-items: stretch; width: 100%; max-width: 960px; flex-wrap: wrap;">
-        
-        <div class="portal-card" style="background: #ffffff; padding: 2.5rem 2rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(30, 58, 95, 0.04); width: 100%; max-width: 420px; flex: 1; min-width: 300px; text-align: center; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid rgba(0, 180, 216, 0.15); transition: all 0.3s ease;">
-            <div>
-                <div style="background: rgba(0, 180, 216, 0.08); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem auto;">
-                    <svg width="32" height="32" fill="none" stroke="#00b4d8" stroke-width="2" viewBox="0 0 24 24">
-                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="8.5" cy="7" r="4"></circle>
-                        <polyline points="17 11 19 13 23 9"></polyline>
-                    </svg>
-                </div>
-                
-                <h3 style="color: #1e3a5f; font-size: 1.5rem; font-weight: 700; margin: 0 0 1rem 0;">Manager Portal</h3>
-                <p style="color: #64748b; font-size: 0.95rem; line-height: 1.6; margin: 0 0 2.5rem 0; padding: 0 1rem;">
-                    Full access to database, project creation, and user management tools.
-                </p>
-            </div>
-            
-            <a href="{% url 'login' %}?role=manager" class="action-btn-teal" style="display: block; background: #00b4d8; color: #ffffff; text-decoration: none; padding: 1rem; border-radius: 10px; font-weight: 600; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s ease; box-shadow: 0 4px 12px rgba(0, 180, 216, 0.15);">
-                Access Admin
-            </a>
-        </div>
-        
-        <div class="portal-card" style="background: #ffffff; padding: 2.5rem 2rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(30, 58, 95, 0.04); width: 100%; max-width: 420px; flex: 1; min-width: 300px; text-align: center; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid rgba(30, 58, 95, 0.05); transition: all 0.3s ease;">
-            <div>
-                <div style="background: rgba(30, 58, 95, 0.04); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem auto;">
-                    <svg width="32" height="32" fill="none" stroke="#1e3a5f" stroke-width="2" viewBox="0 0 24 24">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="8.5" cy="7" r="4"></circle>
-                    </svg>
-                </div>
-                
-                <h3 style="color: #1e3a5f; font-size: 1.5rem; font-weight: 700; margin: 0 0 1rem 0;">Employee Workspace</h3>
-                <p style="color: #64748b; font-size: 0.95rem; line-height: 1.6; margin: 0 0 2.5rem 0; padding: 0 1rem;">
-                    View your assigned projects and update your current task status workflow natively.
-                </p>
-            </div>
-            
-            <a href="{% url 'login' %}?role=employee" class="action-btn-dark" style="display: block; background: #1e3a5f; color: #ffffff; text-decoration: none; padding: 1rem; border-radius: 10px; font-weight: 600; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s ease; box-shadow: 0 4px 12px rgba(30, 58, 95, 0.15);">
-                Enter Dashboard
-            </a>
-        </div>
-        
-    </div>
 </div>
 
-<style>
-    .portal-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 20px 40px rgba(30, 58, 95, 0.08) !important;
-    }
-    .action-btn-teal:hover {
-        background: #0096b4 !important;
-        box-shadow: 0 6px 16px rgba(0, 180, 216, 0.3) !important;
-    }
-    .action-btn-dark:hover {
-        background: #12253f !important;
-        box-shadow: 0 6px 16px rgba(30, 58, 95, 0.3) !important;
-    }
-</style>
 {% endblock %}

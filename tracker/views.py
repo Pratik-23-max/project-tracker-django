@@ -31,26 +31,14 @@ def signup(request):
 # 3. Fixed Portal Choice Logic (Reads Session Cache & URL Param Parameters)
 @login_required
 def portal_choice(request):
-    # Check if a specific role parameter was passed in the URL
-    chosen_role = request.GET.get('role') or request.POST.get('role')
-    
-    # Save the role choice to the session context so it isn't lost during navigation
-    if chosen_role:
-        request.session['user_portal_role'] = chosen_role
-    else:
-        # Fallback to look at the session cache if the URL parameter was stripped
-        chosen_role = request.session.get('user_portal_role')
+    """
+    Redirect users automatically based on their role.
+    """
 
-    if chosen_role == 'manager':
-        return redirect('dashboard')
-    elif chosen_role == 'employee':
-        return redirect('employee_dashboard')
-        
-    # Final Fallback Option: If no parameter exists anywhere, use model profile architecture
-    if request.user.is_staff:
-        return redirect('dashboard')
-        
-    return redirect('employee_dashboard')
+    if request.user.is_superuser:
+        return redirect("dashboard")
+
+    return redirect("employee_dashboard")
 
 
 # 4. Manager Dashboard (Updated to support flexible querying fallback)

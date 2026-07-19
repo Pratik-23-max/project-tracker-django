@@ -4,8 +4,10 @@
 
 <html lang="en">
 <head>
+    <link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <meta charset="UTF-8">
-    <title>CodeSoft | Dashboard</title>
+    <title>FlowBoard | Dashboard</title>
 
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -65,28 +67,45 @@
         color: var(--accent-orange);
     }
 
-    .stats-card {
-        background: var(--bg-card-grey);
-        border: 1px solid var(--border-color);
-        border-left: 4px solid var(--accent-orange);
-        border-radius: 12px;
-        padding: 20px;
-        height: 100%;
-    }
+    .stats-card{
+    background:#1f2937;
+    border:none;
+    border-radius:16px;
+    padding:25px;
+    height:100%;
+    transition:.3s;
+    box-shadow:0 8px 20px rgba(0,0,0,.25);
+}
 
-    .stats-card h2 {
-        font-size: 2rem;
-        margin-top: 10px;
-        color: white;
-    }
+.stats-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 14px 30px rgba(0,0,0,.35);
+}
 
-    .project-card {
-        background: var(--bg-card-grey);
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        transition: .3s;
-    }
+    .stats-card h2{
+    font-size:2.3rem;
+    font-weight:700;
+    color:#38bdf8;
+    margin-top:10px;
+}
 
+.stats-card small{
+    color:#9ca3af;
+    font-size:15px;
+}
+
+    .project-card{
+    background:#1f2937;
+    border:none;
+    border-radius:18px;
+    transition:.3s;
+    box-shadow:0 8px 20px rgba(0,0,0,.25);
+}
+
+.project-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 15px 35px rgba(0,0,0,.35);
+}
     .project-card:hover {
         border-color: var(--accent-orange);
     }
@@ -116,7 +135,7 @@
 
 <nav class="navbar navbar-custom d-flex justify-content-between">
     <h4 class="text-white m-0">
-        CodeSoft Manager Dashboard
+        FlowBoard Manager Dashboard
     </h4>
 
 
@@ -131,23 +150,29 @@
 </nav>
 
 <div class="sidebar">
+
+    <h3 class="text-center text-white mb-4">
+        <i class="fa-solid fa-layer-group"></i> FlowBoard
+    </h3>
+
     <nav class="nav flex-column">
 
+        <a href="{% url 'dashboard' %}" class="nav-link">
+            <i class="fa-solid fa-house me-2"></i>
+            Dashboard
+        </a>
 
-    <a href="{% url 'dashboard' %}" class="nav-link">
-        Dashboard
-    </a>
+        <a href="{% url 'employee_dashboard' %}" class="nav-link">
+            <i class="fa-solid fa-list-check me-2"></i>
+            My Tasks
+        </a>
 
-    <a href="{% url 'employee_dashboard' %}" class="nav-link">
-        My Tasks
-    </a>
+        <a href="{% url 'index' %}" class="nav-link">
+            <i class="fa-solid fa-house-user me-2"></i>
+            Home
+        </a>
 
-    <a href="{% url 'index' %}" class="nav-link">
-        Home
-    </a>
-
-</nav>
-
+    </nav>
 
 </div>
 
