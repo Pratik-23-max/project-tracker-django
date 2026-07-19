@@ -41,9 +41,9 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
 
-    if self.request.user.is_superuser:
-        return Task.objects.all()
+        if self.request.user.is_superuser:
+            return Task.objects.all()
 
-    return Task.objects.filter(
+        return Task.objects.filter(
         assigned_to=self.request.user
     )
