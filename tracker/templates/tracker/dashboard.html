@@ -131,6 +131,40 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 
 
 </head>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const ctx = document.getElementById('taskChart');
+
+new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Completed', 'Pending'],
+        datasets: [{
+            data: [
+                {{ completed_tasks }},
+                {{ pending_tasks }}
+            ],
+            backgroundColor: [
+                '#22c55e',
+                '#f59e0b'
+            ],
+            borderWidth: 0
+        }]
+    },
+    options: {
+        plugins: {
+            legend: {
+                labels: {
+                    color: 'white'
+                }
+            }
+        }
+    }
+});
+
+</script>
 <body>
 
 <nav class="navbar navbar-custom d-flex justify-content-between">
@@ -184,44 +218,44 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 <p class="text-muted mb-0">
     Manager Dashboard
 </p>
-
 <div class="row mb-5">
 
-    <div class="col-md-2">
+    <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
         <div class="stats-card">
             <small>Total Projects</small>
             <h2>{{ total_projects }}</h2>
         </div>
     </div>
 
-    <div class="col-md-2">
+    <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
         <div class="stats-card">
             <small>Total Tasks</small>
             <h2>{{ total_tasks }}</h2>
         </div>
     </div>
-    <div class="col-md-2">
-    <div class="stats-card">
-        <small>Employees</small>
-        <h2>{{ total_employees }}</h2>
-    </div>
-</div>
 
-    <div class="col-md-2">
+    <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+        <div class="stats-card">
+            <small>Employees</small>
+            <h2>{{ total_employees }}</h2>
+        </div>
+    </div>
+
+    <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
         <div class="stats-card">
             <small>Completed</small>
             <h2>{{ completed_tasks }}</h2>
         </div>
     </div>
 
-    <div class="col-md-2">
+    <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
         <div class="stats-card">
             <small>Pending</small>
             <h2>{{ pending_tasks }}</h2>
         </div>
     </div>
 
-    <div class="col-md-2">
+    <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
         <div class="stats-card">
             <small>Completion %</small>
             <h2>{{ completion_percentage }}%</h2>
@@ -229,6 +263,23 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
     </div>
 
 </div>
+
+<div class="row mb-5">
+
+    <div class="col-lg-5">
+
+        <div class="stats-card">
+
+            <h5 class="mb-4">Task Overview</h5>
+
+            <canvas id="taskChart"></canvas>
+
+        </div>
+
+    </div>
+
+</div>
+
 
 <div class="d-flex justify-content-between align-items-center mb-4">
 
