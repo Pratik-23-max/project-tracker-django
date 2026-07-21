@@ -127,44 +127,46 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         padding: 8px 15px;
         border-radius: 5px;
     }
+    .project-title{
+    color:#f59e0b;
+    font-weight:700;
+}
+
+.btn-create-project{
+    background:#e67e22;
+    color:#fff !important;
+    font-weight:600;
+    padding:10px 18px;
+    border-radius:10px;
+    border:none;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    transition:0.3s;
+}
+
+.btn-create-project:hover{
+    background:#cf711b;
+    color:#fff !important;
+    transform:translateY(-2px);
+}
+.progress-custom{
+    height:12px;
+    border-radius:20px;
+}
+.stats-card{
+    position:relative;
+}
+
+.stats-card canvas{
+    width:100% !important;
+    height:280px !important;
+}
 </style>
 
 
 </head>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<script>
-
-const ctx = document.getElementById('taskChart');
-
-new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-        labels: ['Completed', 'Pending'],
-        datasets: [{
-            data: [
-                {{ completed_tasks }},
-                {{ pending_tasks }}
-            ],
-            backgroundColor: [
-                '#22c55e',
-                '#f59e0b'
-            ],
-            borderWidth: 0
-        }]
-    },
-    options: {
-        plugins: {
-            legend: {
-                labels: {
-                    color: 'white'
-                }
-            }
-        }
-    }
-});
-
-</script>
 <body>
 
 <nav class="navbar navbar-custom d-flex justify-content-between">
@@ -263,6 +265,9 @@ new Chart(ctx, {
     </div>
 
 </div>
+<h3 class="mb-4">
+    Dashboard Analytics
+</h3>
 
 <div class="row mb-5">
 
@@ -270,9 +275,25 @@ new Chart(ctx, {
 
         <div class="stats-card">
 
-            <h5 class="mb-4">Task Overview</h5>
+            <h5 class="mb-4">
+                Task Status
+            </h5>
 
             <canvas id="taskChart"></canvas>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-7">
+
+        <div class="stats-card">
+
+            <h5 class="mb-4">
+                Overview
+            </h5>
+
+            <canvas id="overviewChart"></canvas>
 
         </div>
 
@@ -326,20 +347,13 @@ new Chart(ctx, {
 
         </form>
 
-        <a
-            href="{% url 'create_project' %}"
-            class="btn"
-            style="
-                background:#e67e22;
-                color:white;
-                font-weight:600;
-                padding:10px 18px;
-                border-radius:8px;
-            ">
+        <a href="{% url 'create_project' %}"
+   class="btn btn-create-project">
 
-            + Create Project
+    <i class="fa-solid fa-plus"></i>
+    Create Project
 
-        </a>
+</a>
 
     </div>
 
@@ -357,7 +371,7 @@ new Chart(ctx, {
 
                 <div class="d-flex justify-content-between">
 
-                    <h5 style="color:#e67e22;">
+                    <h5 class="project-title">
                         {{ item.project.title }}
                     </h5>
 
@@ -400,7 +414,7 @@ new Chart(ctx, {
         Progress
     </small>
 
-    <div class="progress mt-1" style="height:12px;">
+    <div class="progress progress-custom mt-1">
 
         <div class="progress-bar bg-success"
              role="progressbar"
@@ -466,6 +480,112 @@ new Chart(ctx, {
 
 
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
 
+const taskCtx = document.getElementById("taskChart").getContext("2d");
+
+new Chart(taskCtx,{
+    type:"doughnut",
+
+    data:{
+        labels:["Completed","Pending"],
+        datasets:[{
+            data:[
+                {{ completed_tasks }},
+                {{ pending_tasks }}
+            ],
+            backgroundColor:[
+                "#09cf52",
+                "#ddd91c"
+            ]
+        }]
+    },
+
+    options:{
+        responsive:true,
+        maintainAspectRatio:false
+    }
+
+});
+
+
+const overviewCtx=document.getElementById("overviewChart").getContext("2d");
+
+new Chart(overviewCtx,{
+
+    type:"bar",
+
+    data:{
+        labels:[
+            "Projects",
+            "Tasks",
+            "Employees"
+        ],
+
+        datasets:[{
+
+            label:"Overview",
+
+            data:[
+                {{ total_projects }},
+                {{ total_tasks }},
+                {{ total_employees }}
+            ],
+
+            backgroundColor:[
+                "#3b82f6",
+                "#22c55e",
+                "#f59e0b"
+            ],
+
+            borderRadius:10
+
+        }]
+    },
+
+    options:{
+
+        responsive:true,
+
+        maintainAspectRatio:false,
+
+        animation:{
+            duration:1500
+        },
+
+        plugins:{
+            legend:{
+                display:false
+            }
+        },
+
+        scales:{
+            x:{
+                ticks:{
+                    color:"white"
+                },
+                grid:{
+                    color:"#2f3542"
+                }
+            },
+
+            y:{
+                beginAtZero:true,
+                ticks:{
+                    color:"white"
+                },
+                grid:{
+                    color:"#2f3542"
+                }
+            }
+
+        }
+
+    }
+
+});
+
+</script>
 </body>
 </html>
