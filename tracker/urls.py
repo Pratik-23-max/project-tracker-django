@@ -24,6 +24,7 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('welcome/', views.employee_dashboard, name='employee_dashboard'),
     
+    
     # Detail and Action Routes
     path('project/<int:project_id>/', views.project_detail, name='project_detail'),
     path('task/<int:task_id>/update/', views.update_task_status, name='update_task_status'),
