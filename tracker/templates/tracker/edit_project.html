@@ -1,54 +1,104 @@
 {% extends "tracker/base.html" %}
 
+{% block title %}Edit Project{% endblock %}
+
 {% block content %}
 
-<div class="card" style="max-width:700px;">
+<div class="form-card">
 
-    <h2 style="margin-bottom:20px;">
-        Edit Project
-    </h2>
-{% if errors %}
+    <div class="d-flex justify-content-between align-items-start mb-4">
 
-<div style="
-background:#7f1d1d;
-color:white;
-padding:15px;
-border-radius:10px;
-margin-bottom:20px;
-">
+        <div>
 
-    {% for field, messages in errors.items %}
-        {% for message in messages %}
-            <p>{{ message }}</p>
+            <h2 class="form-title">
+                <i class="fa-solid fa-pen-to-square me-3 text-warning"></i>
+                Edit Project
+            </h2>
+
+            <p class="form-subtitle">
+                Update your project details and keep your team aligned.
+            </p>
+
+        </div>
+
+        <a href="{% url 'dashboard' %}" class="flow-back">
+
+            <i class="fa-solid fa-arrow-left me-2"></i>
+
+            Back
+
+        </a>
+
+    </div>
+
+    {% if errors %}
+
+    <div style="
+        background:#7f1d1d;
+        color:white;
+        padding:15px;
+        border-radius:10px;
+        margin-bottom:25px;
+    ">
+
+        {% for field, messages in errors.items %}
+            {% for message in messages %}
+                <p style="margin:0 0 8px 0;">
+                    {{ message }}
+                </p>
+            {% endfor %}
         {% endfor %}
-    {% endfor %}
 
-</div>
+    </div>
 
-{% endif %}
+    {% endif %}
+
     <form method="POST">
 
         {% csrf_token %}
 
-        <label>Project Title</label>
+        <div class="mb-4">
 
-        <input
-            type="text"
-            name="title"
-            value="{{ project.title }}"
-            required
+            <label class="flow-label">
+                Project Title
+            </label>
+
+            <input
+                type="text"
+                name="title"
+                value="{{ project.title }}"
+                class="flow-input"
+                placeholder="Enter project title"
+                required
+            >
+
+        </div>
+
+        <div class="mb-4">
+
+            <label class="flow-label">
+                Description
+            </label>
+
+            <textarea
+                name="description"
+                rows="6"
+                class="flow-textarea"
+                placeholder="Describe your project..."
+                required
+            >{{ project.description }}</textarea>
+
+        </div>
+
+        <button
+            type="submit"
+            class="flow-button"
         >
 
-        <label>Description</label>
+            <i class="fa-solid fa-floppy-disk me-2"></i>
 
-        <textarea
-            name="description"
-            rows="5"
-            required
-        >{{ project.description }}</textarea>
-
-        <button type="submit">
             Save Changes
+
         </button>
 
     </form>

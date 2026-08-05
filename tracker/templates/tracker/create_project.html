@@ -2,60 +2,93 @@
 
 {% block content %}
 
-<div class="card" style="max-width:700px;">
+<div class="form-card">
 
-    <h2 style="margin-bottom:20px;">
-        Create New Project
-    </h2>
-    {% if errors %}
+    <div class="d-flex justify-content-between align-items-start mb-4">
 
-<div style="
-background:#7f1d1d;
-color:white;
-padding:15px;
-border-radius:10px;
-margin-bottom:20px;
-">
+        <div>
 
-    {% for field, messages in errors.items %}
+            <h2 class="form-title">
+                <i class="fa-solid fa-folder-plus me-2 text-warning"></i>
+                Create New Project
+            </h2>
 
-        {% for message in messages %}
-
-            <p style="margin:0 0 8px 0;">
-                {{ message }}
+            <p class="form-subtitle">
+                Create and organize a new project for your team.
             </p>
 
-        {% endfor %}
+        </div>
 
-    {% endfor %}
+        <a href="{% url 'dashboard' %}" class="flow-back">
+            <i class="fa-solid fa-arrow-left me-2"></i>
+            Back
+        </a>
 
-</div>
+    </div>
 
-{% endif %}
+    {% if errors %}
+
+        <div class="alert alert-danger">
+
+            {% for field, messages in errors.items %}
+
+                {% for message in messages %}
+
+                    <div>{{ message }}</div>
+
+                {% endfor %}
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
 
     <form method="POST">
 
         {% csrf_token %}
 
-        <label>Project Title</label>
+        <div class="mb-4">
 
-        <input
-            type="text"
-            name="title"
-            value="{{ title }}"
-            required
+            <label class="flow-label">
+                Project Title
+            </label>
+
+            <input
+                type="text"
+                name="title"
+                value="{{ title }}"
+                class="flow-input"
+                placeholder="Enter project title"
+                required
+            >
+
+        </div>
+
+        <div class="mb-4">
+
+            <label class="flow-label">
+                Description
+            </label>
+
+            <textarea
+                name="description"
+                class="flow-textarea"
+                placeholder="Describe your project..."
+                required
+            >{{ description }}</textarea>
+
+        </div>
+
+        <button
+            type="submit"
+            class="flow-button"
         >
 
-        <label>Description</label>
+            <i class="fa-solid fa-plus me-2"></i>
 
-        <textarea
-            name="description"
-            rows="5"
-            required
-        >{{ description }}</textarea>
-
-        <button type="submit">
             Create Project
+
         </button>
 
     </form>

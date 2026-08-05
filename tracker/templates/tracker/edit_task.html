@@ -1,128 +1,216 @@
 {% extends "tracker/base.html" %}
 
+{% block title %}Edit Task{% endblock %}
+
 {% block content %}
 
-<div class="card" style="max-width:700px;">
+<div class="form-card">
 
-    <h2 style="margin-bottom:20px;">
-        Edit Task
-    </h2>
-{% if errors %}
+    <div class="d-flex justify-content-between align-items-start mb-4">
 
-<div style="
-background:#7f1d1d;
-color:white;
-padding:15px;
-border-radius:10px;
-margin-bottom:20px;
-">
+        <div>
 
-    {% for field, messages in errors.items %}
+            <h2 class="form-title">
+                <i class="fa-solid fa-list-check me-3 text-warning"></i>
+                Edit Task
+            </h2>
 
-        {% for message in messages %}
+            <p class="form-subtitle">
+                Update task information, assignment and progress.
+            </p>
 
-            <p>{{ message }}</p>
+        </div>
 
+        <a href="{% url 'dashboard' %}" class="flow-back">
+
+            <i class="fa-solid fa-arrow-left me-2"></i>
+
+            Back
+
+        </a>
+
+    </div>
+
+    {% if errors %}
+
+    <div style="
+        background:#7f1d1d;
+        color:white;
+        padding:15px;
+        border-radius:10px;
+        margin-bottom:25px;
+    ">
+
+        {% for field, messages in errors.items %}
+            {% for message in messages %}
+                <p style="margin:0 0 8px 0;">
+                    {{ message }}
+                </p>
+            {% endfor %}
         {% endfor %}
 
-    {% endfor %}
+    </div>
 
-</div>
+    {% endif %}
 
-{% endif %}
     <form method="POST">
 
         {% csrf_token %}
 
-        <label>Task Title</label>
+        <div class="mb-4">
 
-        <input
-            type="text"
-            name="title"
-            value="{{ task.title }}"
-            required
+            <label class="flow-label">
+                Task Title
+            </label>
+
+            <input
+                type="text"
+                name="title"
+                value="{{ task.title }}"
+                class="flow-input"
+                placeholder="Enter task title"
+                required
+            >
+
+        </div>
+
+        <div class="mb-4">
+
+            <label class="flow-label">
+                Description
+            </label>
+
+            <textarea
+                name="description"
+                rows="6"
+                class="flow-textarea"
+                placeholder="Describe the task..."
+                required
+            >{{ task.description }}</textarea>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-6 mb-4">
+
+                <label class="flow-label">
+                    Priority
+                </label>
+
+                <select
+                    name="priority"
+                    class="flow-select"
+                >
+
+                    <option value="Low"
+                        {% if task.priority == 'Low' %}selected{% endif %}>
+                        Low
+                    </option>
+
+                    <option value="Medium"
+                        {% if task.priority == 'Medium' %}selected{% endif %}>
+                        Medium
+                    </option>
+
+                    <option value="High"
+                        {% if task.priority == 'High' %}selected{% endif %}>
+                        High
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="col-md-6 mb-4">
+
+                <label class="flow-label">
+                    Status
+                </label>
+
+                <select
+                    name="status"
+                    class="flow-select"
+                >
+
+                    <option value="Pending"
+                        {% if task.status == 'Pending' %}selected{% endif %}>
+                        Pending
+                    </option>
+
+                    <option value="In Progress"
+                        {% if task.status == 'In Progress' %}selected{% endif %}>
+                        In Progress
+                    </option>
+
+                    <option value="Completed"
+                        {% if task.status == 'Completed' %}selected{% endif %}>
+                        Completed
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-6 mb-4">
+
+                <label class="flow-label">
+                    Deadline
+                </label>
+
+                <input
+                    type="date"
+                    name="deadline"
+                    class="flow-input"
+                    value="{{ task.deadline|date:'Y-m-d' }}"
+                >
+
+            </div>
+
+            <div class="col-md-6 mb-4">
+
+                <label class="flow-label">
+                    Assign To
+                </label>
+
+                <select
+                    name="assigned_to"
+                    class="flow-select"
+                    required
+                >
+
+                    {% for employee in employees %}
+
+                    <option
+                        value="{{ employee.id }}"
+                        {% if task.assigned_to == employee %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ employee.username }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+        </div>
+
+        <button
+            type="submit"
+            class="flow-button"
         >
 
-        <label>Description</label>
+            <i class="fa-solid fa-floppy-disk me-2"></i>
 
-        <textarea
-            name="description"
-            rows="5"
-            required
-        >{{ task.description }}</textarea>
-
-        <label>Priority</label>
-
-        <select name="priority">
-
-            <option value="Low"
-                {% if task.priority == 'Low' %}selected{% endif %}>
-                Low
-            </option>
-
-            <option value="Medium"
-                {% if task.priority == 'Medium' %}selected{% endif %}>
-                Medium
-            </option>
-
-            <option value="High"
-                {% if task.priority == 'High' %}selected{% endif %}>
-                High
-            </option>
-
-        </select>
-
-        <label>Status</label>
-
-        <select name="status">
-
-            <option value="Pending"
-                {% if task.status == 'Pending' %}selected{% endif %}>
-                Pending
-            </option>
-
-            <option value="In Progress"
-                {% if task.status == 'In Progress' %}selected{% endif %}>
-                In Progress
-            </option>
-
-            <option value="Completed"
-                {% if task.status == 'Completed' %}selected{% endif %}>
-                Completed
-            </option>
-
-        </select>
-
-        <label>Deadline</label>
-
-        <input
-            type="date"
-            name="deadline"
-            value="{{ task.deadline|date:'Y-m-d' }}"
-        >
-        <label>Assign To</label>
-
-<select name="assigned_to" required>
-
-    {% for employee in employees %}
-
-        <option
-            value="{{ employee.id }}"
-            {% if task.assigned_to == employee %}
-                selected
-            {% endif %}
-        >
-
-            {{ employee.username }}
-
-        </option>
-
-    {% endfor %}
-
-</select>
-
-        <button type="submit">
             Save Changes
+
         </button>
 
     </form>

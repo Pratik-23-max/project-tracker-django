@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User   # <-- ADD THIS
 from .models import Project, Task, Profile
 from datetime import date
+from django.contrib import messages
 from django.core.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -357,7 +358,9 @@ def create_project(request):
 
             project.save()
 
-            return redirect('dashboard')
+            messages.success(request, "Project created successfully!")
+
+            return redirect("dashboard")
 
         except ValidationError as e:
 
@@ -388,10 +391,13 @@ def delete_project(request, project_id):
         id=project_id,
         manager=request.user
     )
-
     project.delete()
 
-    return redirect('dashboard')
+    messages.success(request, "Project deleted successfully!")
+
+    return redirect(...)
+
+        
 #edit project view
 @login_required
 def edit_project(request, project_id):
@@ -418,7 +424,9 @@ def edit_project(request, project_id):
 
             project.save()
 
-            return redirect('dashboard')
+            messages.success(request, "Project updated successfully!")
+
+            return redirect(...)
 
         except ValidationError as e:
 
@@ -477,6 +485,9 @@ def edit_task(request, task_id):
 
             task.save()
 
+            messages.success(request, "Task updated successfully!")
+        
+
             return redirect(
                 'project_detail',
                 project_id=task.project.id
@@ -520,6 +531,10 @@ def delete_task(request, task_id):
     project_id = task.project.id
 
     task.delete()
+
+    messages.success(request, "Task deleted successfully!")
+
+
 
     return redirect(
         'project_detail',
