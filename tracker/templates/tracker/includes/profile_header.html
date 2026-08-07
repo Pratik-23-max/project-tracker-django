@@ -1,13 +1,15 @@
 <div class="d-flex align-items-center mb-4">
 
     {% if profile and profile.profile_picture %}
-        <img src="{{ profile.profile_picture.url }}"
-             alt="Profile"
-             width="75"
-             height="75"
-             class="rounded-circle me-3"
-             style="object-fit: cover; border:3px solid #0d6efd;">
-    {% endif %}
+    <img src="{{ profile.profile_picture.url }}"
+         alt="Profile"
+         width="75"
+         height="75"
+         class="rounded-circle me-3"
+         style="object-fit: cover; border:3px solid #0d6efd;">
+
+    <p>{{ profile.profile_picture.url }}</p>
+{% endif %}
 
     <div>
         <h2 class="dashboard-title">
